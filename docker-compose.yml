@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app  # Mount project directory to container for development
+    environment:
+      DJANGO_SETTINGS_MODULE: MTSites.settings.dev  # Or your dev settings file
+      SECRET_KEY: 'your_super_secret_key_here' # Change this!
+      DATABASE_URL: postgres://postgres:postgres@db:5432/wagtaildb  # Connection string for PostgreSQL in Docker
+    depends_on:
+      - db
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: wagtaildb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
