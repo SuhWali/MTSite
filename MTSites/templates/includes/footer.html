@@ -1,26 +1,76 @@
-{# Load navigation_tags at the top of the file: #}
-{% load navigation_tags %}
+{% load navigation_tags wagtailcore_tags %}
 
-<footer>
-    <p>Built with Wagtail</p>
-
-    {% with linkedin_url=settings.base.NavigationSettings.linkedin_url github_url=settings.base.NavigationSettings.github_url mastodon_url=settings.base.NavigationSettings.mastodon_url %}
-        {% if linkedin_url or github_url or mastodon_url %}
-            <p>
-                Follow me on:
+<footer class="bg-primary text-white py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h5>MTSites</h5>
+        <p class="small">
+          {% get_footer_text %}
+        </p>
+        
+        {% with linkedin_url=settings.base.NavigationSettings.linkedin_url github_url=settings.base.NavigationSettings.github_url mastodon_url=settings.base.NavigationSettings.mastodon_url %}
+          {% if linkedin_url or github_url or mastodon_url %}
+            <div class="social-links mt-3">
+              <h6>Follow us:</h6>
+              <div class="d-flex gap-3">
                 {% if github_url %}
-                    <a href="{{ github_url }}">GitHub</a>
+                  <a href="{{ github_url }}" class="text-white" target="_blank" aria-label="GitHub">
+                    <i class="bi bi-github fs-4"></i>
+                  </a>
                 {% endif %}
                 {% if linkedin_url %}
-                    <a href="{{ linkedin_url }}">LinkedIn</a>
+                  <a href="{{ linkedin_url }}" class="text-white" target="_blank" aria-label="LinkedIn">
+                    <i class="bi bi-linkedin fs-4"></i>
+                  </a>
                 {% endif %}
                 {% if mastodon_url %}
-                    <a href="{{ mastodon_url }}">Mastodon</a>
+                  <a href="{{ mastodon_url }}" class="text-white" target="_blank" aria-label="Mastodon">
+                    <i class="bi bi-mastodon fs-4"></i>
+                  </a>
                 {% endif %}
-            </p>
-        {% endif %}
-    {% endwith %}
-
-    {# Add footer_text: #}
-    {% get_footer_text %}
+              </div>
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="col-md-2 mb-3 mb-md-0">
+        <h5>Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="/" class="text-white">Home</a></li>
+          <li><a href="/about-us/" class="text-white">About Us</a></li>
+          <li><a href="/partners/" class="text-white">Partners</a></li>
+          <li><a href="/departments/" class="text-white">Departments</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2 mb-3 mb-md-0">
+        <h5>Resources</h5>
+        <ul class="list-unstyled">
+          <li><a href="/resources/" class="text-white">Resources</a></li>
+          <li><a href="/news/" class="text-white">News</a></li>
+          <li><a href="/search/" class="text-white">Search</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact Us</h5>
+        <address class="small">
+          <strong>MTSites Headquarters</strong><br>
+          123 Water Street<br>
+          Ocean City, CA 90210<br>
+          <i class="bi bi-envelope"></i> <a href="mailto:info@mtsites.com" class="text-white">info@mtsites.com</a><br>
+          <i class="bi bi-telephone"></i> (123) 456-7890
+        </address>
+      </div>
+    </div>
+    <hr class="my-3 bg-light">
+    <div class="row">
+      <div class="col-md-6 small">
+        &copy; {% now "Y" %} MTSites. All rights reserved.
+      </div>
+      <div class="col-md-6 text-md-end small">
+        <a href="/privacy-policy/" class="text-white me-3">Privacy Policy</a>
+        <a href="/terms-of-service/" class="text-white">Terms of Service</a>
+      </div>
+    </div>
+  </div>
 </footer>
