@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{{ page.title }}</h1>
+    <div class="intro">{{ page.intro|richtext }}</div>
+    
+    {% if current_tag %}
+    <div class="alert alert-info mb-4">
+        Showing articles tagged with "{{ current_tag }}" 
+        <a href="{% pageurl page %}" class="btn btn-sm btn-outline-dark ms-2">Clear filter</a>
+    </div>
+    {% endif %}
+    
+    {% if carousel_articles %}
+    <!-- Carousel for top 5 articles -->
+    <div id="newsCarousel" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="10000">
+        <div class="carousel-indicators">
+            {% for article in carousel_articles %}
+                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for article in carousel_articles %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    {% if article.image %}
+                        {% image article.image fill-1200x500 as carousel_img %}
+                        <img src="{{ carousel_img.url }}" class="d-block w-100" alt="{{ article.title }}">
+                    {% else %}
+                        <div class="bg-light d-block w-100" style="height: 500px;"></div>
+                    {% endif %}
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded">
+                        <h3>{{ article.title }}</h3>
+                        <p>{{ article.intro }}</p>
+                        <a href="{% pageurl article %}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    {% endif %}
+    
+    <!-- Grid of all articles -->
+    <h2 class="mb-4">Latest News</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        {% for article in articles %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if article.image %}
+                        {% image article.image fill-400x300 as card_img %}
+                        <img src="{{ card_img.url }}" class="card-img-top" alt="{{ article.title }}">
+                    {% else %}
+                        <div class="bg-light" style="height: 200px;"></div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text text-muted">{{ article.date|date:"F j, Y" }}</p>
+                        {% if article.author %}
+                        <p class="card-text text-muted small">By {{ article.author }}</p>
+                        {% endif %}
+                        <p class="card-text">{{ article.intro }}</p>
+                        {% if article.tags.all %}
+                            <div class="mb-2">
+                                {% for tag in article.tags.all %}
+                                    <a href="?tag={{ tag|urlencode }}" class="badge bg-secondary text-decoration-none">{{ tag }}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <a href="{% pageurl article %}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if articles.paginator.num_pages > 1 %}
+    <nav aria-label="News pagination">
+        <ul class="pagination justify-content-center">
+            {% if articles.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.previous_page_number }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                </li>
+            {% endif %}
+            
+            {% for page_num in articles.paginator.page_range %}
+                <li class="page-item {% if page_num == articles.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            
+            {% if articles.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.next_page_number }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %} 

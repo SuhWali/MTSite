@@ -1,0 +1,18 @@
+<div class="block-card card border mb-4 shadow-sm">
+    {% if value.image %}
+    <div class="card-img-top">
+        {% image value.image fill-800x450 class="w-100" %}
+    </div>
+    {% endif %}
+    <div class="card-body">
+        <h3 class="card-title fw-semibold mb-2">{{ value.title }}</h3>
+        {% if value.text %}
+        <div class="card-text text-secondary mb-3">{{ value.text }}</div>
+        {% endif %}
+        {% if value.link %}
+        <a href="{{ value.link }}" class="btn btn-link text-primary p-0">
+            {{ value.link_text }}
+        </a>
+        {% endif %}
+    </div>
+</div> 

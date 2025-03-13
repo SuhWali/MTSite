@@ -1,0 +1,14 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<figure class="block-image mb-6">
+    {% if value.link %}
+    <a href="{{ value.link }}" class="block">
+    {% endif %}
+        {% image value.image width-800 class="w-full h-auto rounded" alt=value.alt_text %}
+    {% if value.link %}
+    </a>
+    {% endif %}
+    {% if value.caption %}
+    <figcaption class="text-sm text-gray-600 mt-2 italic">{{ value.caption }}</figcaption>
+    {% endif %}
+</figure> 

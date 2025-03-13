@@ -1,0 +1,8 @@
+<div class="block-video mb-6">
+    <div class="video-container aspect-w-16 aspect-h-9 rounded overflow-hidden">
+        {{ value.video }}
+    </div>
+    {% if value.caption %}
+    <p class="text-sm text-gray-600 mt-2 italic">{{ value.caption }}</p>
+    {% endif %}
+</div> 

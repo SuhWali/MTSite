@@ -1,0 +1,11 @@
+<div class="block-icon-text d-flex align-items-start mb-4">
+    <div class="icon-container me-3 text-primary">
+        <i class="fas {{ value.icon }} fs-4"></i>
+    </div>
+    <div class="icon-content">
+        <h4 class="fw-medium mb-1">{{ value.title }}</h4>
+        {% if value.text %}
+        <p class="text-secondary">{{ value.text }}</p>
+        {% endif %}
+    </div>
+</div> 

@@ -1,0 +1,18 @@
+<div class="block-document border rounded p-4 mb-6 flex items-start">
+    <div class="document-icon mr-3 text-gray-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+    </div>
+    <div class="document-content">
+        <h4 class="font-medium mb-1">
+            {% if value.title %}{{ value.title }}{% else %}{{ value.document.title }}{% endif %}
+        </h4>
+        {% if value.description %}
+        <p class="text-sm text-gray-600 mb-2">{{ value.description }}</p>
+        {% endif %}
+        <a href="{{ value.document.url }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium" download>
+            Download document ({{ value.document.file_extension|upper }}, {{ value.document.file.size|filesizeformat }})
+        </a>
+    </div>
+</div> 

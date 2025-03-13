@@ -1,0 +1,35 @@
+/* News carousel customization */
+#newsCarousel .carousel-item {
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+}
+
+#newsCarousel .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    padding: 20px;
+    bottom: 40px;
+}
+
+/* News card customization */
+.news-card {
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.news-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Pagination customization */
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+} 

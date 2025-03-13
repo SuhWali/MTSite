@@ -1,0 +1,33 @@
+{% load wagtailcore_tags %}
+<div class="block-cta my-4 p-4 rounded 
+    {% if value.background_color == 'light' %}
+        bg-light text-dark
+    {% elif value.background_color == 'dark' %}
+        bg-dark text-white
+    {% else %}
+        bg-primary text-white
+    {% endif %}">
+    <h3 class="fw-bold mb-3">{{ value.title }}</h3>
+    {% if value.text %}
+    <div class="mb-3 
+        {% if value.background_color == 'dark' %}
+            text-light
+        {% elif value.background_color == 'primary' %}
+            text-white opacity-75
+        {% else %}
+            text-secondary
+        {% endif %}">
+        {{ value.text }}
+    </div>
+    {% endif %}
+    <a href="{{ value.button_link }}" class="btn 
+        {% if value.background_color == 'light' %}
+            btn-primary
+        {% elif value.background_color == 'dark' %}
+            btn-light
+        {% else %}
+            btn-outline-light
+        {% endif %}">
+        {{ value.button_text }}
+    </a>
+</div> 

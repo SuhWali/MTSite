@@ -1,0 +1,8 @@
+<{{ value.size }} class="block-heading 
+    {% if value.size == 'h2' %}fw-bold mb-4
+    {% elif value.size == 'h3' %}fw-semibold mb-3
+    {% elif value.size == 'h4' %}fw-medium mb-2
+    {% elif value.size == 'h5' %}fw-medium mb-2
+    {% else %}fw-medium mb-1{% endif %}">
+    {{ value.heading }}
+</{{ value.size }}> 

@@ -87,14 +87,31 @@
     color: var(--primary-dark);
 }
 
+/* Sticky footer setup */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container.mt-4 {
+    flex: 1 0 auto;
+}
+
 /* Footer styling */
 footer {
     background-color: var(--primary);
+    flex-shrink: 0;
+    margin-top: auto;
 }
 
 footer h5 {
-    font-weight: 600;
-    margin-bottom: 1rem;
+    font-weight: 6000;
+    margin-bottom: 10rem;
 }
 
 footer a {
@@ -103,7 +120,7 @@ footer a {
 }
 
 footer a:hover {
-    opacity: 0.8;
+    opacity: 10;
     text-decoration: underline;
 }
 

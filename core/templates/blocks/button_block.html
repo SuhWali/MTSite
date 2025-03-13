@@ -1,0 +1,12 @@
+<div class="block-button my-3">
+    <a href="{{ value.link }}" class="btn 
+        {% if value.style == 'primary' %}
+            btn-primary
+        {% elif value.style == 'secondary' %}
+            btn-secondary
+        {% else %}
+            btn-outline-primary
+        {% endif %}">
+        {{ value.text }}
+    </a>
+</div> 
