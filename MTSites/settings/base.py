@@ -84,7 +84,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "MTSites.wsgi.application"
+# settings.py
 
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = True
+
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 15 * 1024 * 1024 # 15MB
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

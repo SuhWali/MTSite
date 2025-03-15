@@ -1,0 +1,53 @@
+{% load wagtailcore_tags %}
+
+<section class="subscribe-block bg-{{ value.background_color }} py-5 my-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                {% if value.title %}
+                    <h2 class="mb-3">{{ value.title }}</h2>
+                {% endif %}
+                
+                {% if value.description %}
+                    <p class="mb-4">{{ value.description }}</p>
+                {% endif %}
+                
+                <form class="subscribe-form" method="post" action="https://newsletter.mt.com/subscribe" id="subscribe-form-{{ id }}">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="email" name="email" class="form-control" placeholder="{{ value.placeholder_text|default:'Your email address' }}" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">{{ value.button_text|default:'Subscribe' }}</button>
+                        </div>
+                    </div>
+                    <div class="form-feedback mt-2 d-none">
+                        <div class="alert alert-success">
+                            {{ value.success_message|default:'Thank you for subscribing!' }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('subscribe-form-{{ id }}');
+    const feedback = form.querySelector('.form-feedback');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Here you would typically send an AJAX request to your backend
+        // For demonstration, we'll just show the success message
+        feedback.classList.remove('d-none');
+        form.querySelector('input').value = '';
+        
+        // Hide the message after 5 seconds
+        setTimeout(function() {
+            feedback.classList.add('d-none');
+        }, 5000);
+    });
+});
+</script> 

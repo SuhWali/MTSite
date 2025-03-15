@@ -1,14 +1,16 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<figure class="block-image mb-6">
-    {% if value.link %}
-    <a href="{{ value.link }}" class="block">
-    {% endif %}
-        {% image value.image width-800 class="w-full h-auto rounded" alt=value.alt_text %}
-    {% if value.link %}
-    </a>
-    {% endif %}
+<figure class="block-image mb-4">
+    <div class="image-container overflow-hidden">
+        {% if value.link %}
+        <a href="{{ value.link }}">
+        {% endif %}
+            {% image value.image width-1000 class="img-fluid rounded w-500" alt=value.alt_text %}
+        {% if value.link %}
+        </a>
+        {% endif %}
+    </div>
     {% if value.caption %}
-    <figcaption class="text-sm text-gray-600 mt-2 italic">{{ value.caption }}</figcaption>
+    <figcaption class="figure-caption mt-2 fst-italic">{{ value.caption }}</figcaption>
     {% endif %}
 </figure> 

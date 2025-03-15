@@ -1,77 +1,380 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
+{% block extra_css %}
+<style>
+    /* Full-width carousel styling */
+    #newsCarousel {
+        margin-top: -1.5rem; /* Negative margin to remove gap from navbar */
+        margin-bottom: 0; /* Removed bottom margin */
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        height: 100vh;
+        max-height: 80vh;
+    }
+    
+    #newsCarousel .carousel-item {
+        height: 100%;
+    }
+    
+    #newsCarousel img, #newsCarousel .bg-light {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    /* Zoom animation for static images */
+    #newsCarousel .carousel-item.active img,
+    #newsCarousel .carousel-item.active .bg-light {
+        animation: carouselZoom 10s forwards;
+        transform-origin: center;
+    }
+    
+    @keyframes carouselZoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.1);
+        }
+    }
+    
+    /* Enhanced caption styling */
+    #newsCarousel .carousel-caption {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        padding: 1.5rem;
+        max-width: 600px;
+        margin: 0 auto;
+        bottom: 10rem;
+        left: 10%;
+        right: 10%;
+    }
+    
+    /* Make carousel caption visible on all devices */
+    #newsCarousel .carousel-caption {
+        display: block !important;
+    }
+    
+    /* Content container adjustment to accommodate full-width carousel */
+    .main-content {
+        margin-top: 5rem; /* Increased top margin to prevent overlap */
+        position: relative; /* Added position relative */
+        z-index: 10; /* Added z-index to ensure content appears above carousel */
+        background-color: #fff; /* Added background color */
+        padding-top: 2rem; /* Added top padding */
+        border-top-left-radius: 20px; /* Added rounded corners */
+        border-top-right-radius: 20px; /* Added rounded corners */
+        box-shadow: 0 -10px 20px rgba(0,0,0,0.05); /* Added subtle shadow */
+    }
+    
+    /* Latest News section styling */
+    .latest-news-heading {
+        position: relative;
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .latest-news-heading::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--bs-primary, #0d6efd);
+        border-radius: 2px;
+    }
+    
+    /* News card styling */
+    .news-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    .news-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+    }
+    
+    .news-card .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .news-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+    
+    .news-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .news-card .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+    
+    .news-card .card-text {
+        color: #666;
+        margin-bottom: 1rem;
+    }
+    
+    .news-card .badge {
+        font-weight: 500;
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.3rem;
+        margin-bottom: 0.3rem;
+        transition: all 0.2s ease;
+    }
+    
+    .news-card .badge:hover {
+        background-color: var(--bs-primary, #0d6efd);
+    }
+    
+    /* Pagination styling */
+    .pagination .page-link {
+        color: var(--bs-primary, #0d6efd);
+        border-radius: 4px;
+        margin: 0 3px;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: var(--bs-primary, #0d6efd);
+        border-color: var(--bs-primary, #0d6efd);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        #newsCarousel {
+            max-height: 70vh;
+        }
+        
+        #newsCarousel .carousel-caption {
+            max-width: 80%;
+        }
+    }
+    
+    @media (max-width: 992px) {
+        #newsCarousel {
+            max-height: 65vh;
+        }
+        
+        .news-card .card-img-top {
+            height: 200px;
+        }
+        
+        .main-content {
+            margin-top: 4rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        #newsCarousel {
+            max-height: 60vh;
+        }
+        
+        #newsCarousel .carousel-caption {
+            padding: 1rem;
+            bottom: 3rem;
+            left: 5%;
+            right: 5%;
+        }
+        
+        #newsCarousel .carousel-caption h3 {
+            font-size: 1.5rem;
+        }
+        
+        .news-card .card-img-top {
+            height: 180px;
+        }
+        
+        .main-content {
+            margin-top: 3rem;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .row-cols-md-3 > * {
+            flex: 0 0 auto;
+            width: 50%; /* 2 columns on medium screens */
+        }
+    }
+    
+    @media (max-width: 576px) {
+        #newsCarousel {
+            max-height: 50vh;
+        }
+        
+        #newsCarousel .carousel-caption {
+            bottom: 1.5rem;
+            padding: 0.75rem;
+        }
+        
+        #newsCarousel .carousel-caption h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        #newsCarousel .carousel-caption .btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .main-content {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        
+        .latest-news-heading {
+            font-size: 1.5rem;
+        }
+        
+        .row-cols-md-3 > * {
+            width: 100%; /* 1 column on small screens */
+        }
+        
+        .news-card .card-img-top {
+            height: 200px;
+        }
+        
+        .pagination .page-link {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    
+    /* Touch device optimizations */
+    @media (hover: none) {
+        .news-card:hover {
+            transform: none;
+        }
+        
+        .news-card:active {
+            transform: translateY(-5px);
+        }
+    }
+    
+    /* Add some styling for the tag badges */
+    .badge.bg-secondary {
+        transition: all 0.2s ease;
+        text-decoration: none !important;
+        display: inline-block;
+    }
+    
+    .badge.bg-secondary:hover {
+        background-color: var(--bs-primary, #0d6efd) !important;
+        cursor: pointer;
+    }
+    
+    /* Style for the current tag alert */
+    .current-tag-alert {
+        background-color: rgba(var(--bs-info-rgb), 0.1);
+        border-left: 4px solid var(--bs-info);
+        border-radius: 4px;
+    }
+    
+    .current-tag-alert .btn {
+        transition: all 0.2s ease;
+    }
+    
+    .current-tag-alert .btn:hover {
+        background-color: var(--bs-dark);
+        color: white;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h1>{{ page.title }}</h1>
+{% if carousel_articles %}
+<!-- Carousel for top 5 articles -->
+<div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000">
+    <div class="carousel-inner">
+        {% for article in carousel_articles %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% if article.image %}
+                    {% image article.image fill-1920x1080 as carousel_img %}
+                    <img src="{{ carousel_img.url }}" alt="{{ article.title }}">
+                {% else %}
+                    <div class="bg-light"></div>
+                {% endif %}
+                <div class="carousel-caption">
+                    <h3>{{ article.title }}</h3>
+                    <p class="d-none d-md-block">{{ article.intro|truncatewords:25 }}</p>
+                    <a href="{% pageurl article %}" class="btn btn-primary mt-2">Read More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    
+    <!-- Carousel indicators -->
+    <div class="carousel-indicators">
+        {% for article in carousel_articles %}
+            <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="container main-content">
+    <!-- <h1>{{ page.title }}</h1> -->
     <div class="intro">{{ page.intro|richtext }}</div>
     
     {% if current_tag %}
-    <div class="alert alert-info mb-4">
-        Showing articles tagged with "{{ current_tag }}" 
-        <a href="{% pageurl page %}" class="btn btn-sm btn-outline-dark ms-2">Clear filter</a>
-    </div>
-    {% endif %}
-    
-    {% if carousel_articles %}
-    <!-- Carousel for top 5 articles -->
-    <div id="newsCarousel" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="10000">
-        <div class="carousel-indicators">
-            {% for article in carousel_articles %}
-                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
-            {% endfor %}
+    <div class="alert current-tag-alert mb-4 d-flex align-items-center justify-content-between">
+        <div>
+            <i class="bi bi-tag-fill me-2"></i>
+            Showing articles tagged with "<strong>{{ current_tag }}</strong>"
         </div>
-        <div class="carousel-inner">
-            {% for article in carousel_articles %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    {% if article.image %}
-                        {% image article.image fill-1200x500 as carousel_img %}
-                        <img src="{{ carousel_img.url }}" class="d-block w-100" alt="{{ article.title }}">
-                    {% else %}
-                        <div class="bg-light d-block w-100" style="height: 500px;"></div>
-                    {% endif %}
-                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded">
-                        <h3>{{ article.title }}</h3>
-                        <p>{{ article.intro }}</p>
-                        <a href="{% pageurl article %}" class="btn btn-primary">Read More</a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <a href="{% pageurl page %}" class="btn btn-sm btn-outline-dark">
+            <i class="bi bi-x-lg me-1"></i>Clear filter
+        </a>
     </div>
     {% endif %}
     
     <!-- Grid of all articles -->
-    <h2 class="mb-4">Latest News</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+    <h2 class="latest-news-heading mb-4">Latest News</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         {% for article in articles %}
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100 news-card">
                     {% if article.image %}
                         {% image article.image fill-400x300 as card_img %}
                         <img src="{{ card_img.url }}" class="card-img-top" alt="{{ article.title }}">
                     {% else %}
-                        <div class="bg-light" style="height: 200px;"></div>
+                        <div class="bg-light" style="height: 220px;"></div>
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ article.title }}</h5>
-                        <p class="card-text text-muted">{{ article.date|date:"F j, Y" }}</p>
+                        <p class="card-text text-muted small mb-1">{{ article.date|date:"F j, Y" }}</p>
                         {% if article.author %}
-                        <p class="card-text text-muted small">By {{ article.author }}</p>
+                        <p class="card-text text-muted small mb-2">By {{ article.author }}</p>
                         {% endif %}
-                        <p class="card-text">{{ article.intro }}</p>
+                        <p class="card-text">{{ article.intro|truncatewords:20 }}</p>
                         {% if article.tags.all %}
-                            <div class="mb-2">
+                            <div class="mb-3">
                                 {% for tag in article.tags.all %}
-                                    <a href="?tag={{ tag|urlencode }}" class="badge bg-secondary text-decoration-none">{{ tag }}</a>
+                                    <a href="?tag={{ tag }}" class="badge bg-secondary text-decoration-none">{{ tag }}</a>
                                 {% endfor %}
                             </div>
                         {% endif %}
@@ -82,13 +385,13 @@
         {% endfor %}
     </div>
     
-    <!-- Pagination -->
+    <!-- Pagination with tag preservation -->
     {% if articles.paginator.num_pages > 1 %}
-    <nav aria-label="News pagination">
+    <nav aria-label="News pagination" class="my-5">
         <ul class="pagination justify-content-center">
             {% if articles.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ articles.previous_page_number }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}" aria-label="Previous">
+                    <a class="page-link" href="?page={{ articles.previous_page_number }}{% if current_tag %}&tag={{ current_tag }}{% endif %}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -100,13 +403,13 @@
             
             {% for page_num in articles.paginator.page_range %}
                 <li class="page-item {% if page_num == articles.number %}active{% endif %}">
-                    <a class="page-link" href="?page={{ page_num }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}">{{ page_num }}</a>
+                    <a class="page-link" href="?page={{ page_num }}{% if current_tag %}&tag={{ current_tag }}{% endif %}">{{ page_num }}</a>
                 </li>
             {% endfor %}
             
             {% if articles.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ articles.next_page_number }}{% if current_tag %}&tag={{ current_tag|urlencode }}{% endif %}" aria-label="Next">
+                    <a class="page-link" href="?page={{ articles.next_page_number }}{% if current_tag %}&tag={{ current_tag }}{% endif %}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -118,5 +421,59 @@
         </ul>
     </nav>
     {% endif %}
+    {% if page.subscribe %}
+        {% for block in page.subscribe %}
+            {% include_block block %}
+        {% endfor %}
+    {% endif %}
 </div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Touch swipe support for carousel
+        const carousel = document.getElementById('newsCarousel');
+        if (carousel) {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            carousel.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance to be considered a swipe
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    // Swipe left - go to next slide
+                    const nextButton = carousel.querySelector('.carousel-control-next');
+                    nextButton.click();
+                }
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    // Swipe right - go to previous slide
+                    const prevButton = carousel.querySelector('.carousel-control-prev');
+                    prevButton.click();
+                }
+            }
+            
+            // Reset animation when slide changes
+            carousel.addEventListener('slide.bs.carousel', function() {
+                const activeItem = carousel.querySelector('.carousel-item.active');
+                const activeImage = activeItem.querySelector('img') || activeItem.querySelector('.bg-light');
+                
+                if (activeImage) {
+                    // Reset the animation
+                    activeImage.style.animation = 'none';
+                    activeImage.offsetHeight; // Trigger reflow
+                    activeImage.style.animation = null;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
 {% endblock %} 

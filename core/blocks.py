@@ -6,7 +6,7 @@ from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
-
+from wagtail.blocks import PageChooserBlock
 
 class HeadingBlock(blocks.StructBlock):
     """A heading with size options"""
@@ -136,8 +136,6 @@ class AccordionBlock(blocks.StructBlock):
         template = 'blocks/accordion_block.html'
 
 
-
-
 class IconTextBlock(blocks.StructBlock):
     """Icon with text"""
     icon = blocks.CharBlock(required=True, help_text="Font Awesome icon name (e.g. 'fa-home')")
@@ -181,20 +179,103 @@ class TwoColumnBlock(blocks.StructBlock):
 
 
 class CarouselBlock(blocks.StructBlock):
-    """Image carousel"""
+    """Image carousel with flexible link options"""
     items = blocks.ListBlock(
         blocks.StructBlock([
             ('image', ImageChooserBlock(required=True)),
             ('title', blocks.CharBlock(required=False)),
             ('text', blocks.TextBlock(required=False)),
-            ('link', blocks.URLBlock(required=False)),
-            ('link_text', blocks.CharBlock(required=False)),
+            ('link_type', blocks.ChoiceBlock(
+                choices=[
+                    ('none', 'No Link'),
+                    ('page', 'Internal Page'),
+                    ('external', 'External URL'),
+                ],
+                default='none',
+                help_text='Select the type of link you want to add'
+            )),
+            ('page_link', PageChooserBlock(required=False, help_text='Select an internal page to link to')),
+            ('external_link', blocks.URLBlock(required=False, help_text='Enter an external URL to link to')),
+            ('link_text', blocks.CharBlock(required=False, default='Read more', help_text='Text to display on the link button')),
         ])
+    )
+    
+    auto_play = blocks.BooleanBlock(required=False, default=True, help_text='Auto-rotate the carousel items')
+    show_indicators = blocks.BooleanBlock(required=False, default=True, help_text='Show the carousel indicators')
+    show_arrows = blocks.BooleanBlock(required=False, default=True, help_text='Show the carousel navigation arrows')
+    
+ 
+    
+    class Meta:
+        icon = 'image'
+        template = 'blocks/home_carousel_block.html'
+        
+
+class SubscribeBlock(blocks.StructBlock):
+    """Email subscription form with title and description"""
+    title = blocks.CharBlock(required=False, default="Subscribe to our newsletter")
+    description = blocks.TextBlock(required=False, default="Stay updated with our latest news and updates.")
+    placeholder_text = blocks.CharBlock(required=False, default="Your email address")
+    button_text = blocks.CharBlock(required=False, default="Subscribe")
+    success_message = blocks.CharBlock(required=False, default="Thank you for subscribing!")
+    background_color = blocks.ChoiceBlock(
+        choices=[
+            ('light', 'Light'),
+            ('dark', 'Dark'),
+            ('primary', 'Primary'),
+        ],
+        default='light',
     )
 
     class Meta:
-        icon = 'image'
-        template = 'blocks/carousel_block.html'
+        icon = 'mail'
+        template = 'blocks/subscribe_block.html'
+
+
+class TopArticlesBlock(blocks.StructBlock):
+    """Block that displays the top articles"""
+    title = blocks.CharBlock(required=False, default="Top Articles")
+    number_of_articles = blocks.IntegerBlock(required=False, default=4, min_value=1, max_value=10, 
+                                            help_text="Choose how many articles to display")
+    show_images = blocks.BooleanBlock(required=False, default=True, 
+                                     help_text="Show or hide the article featured images")
+    show_date = blocks.BooleanBlock(required=False, default=True,
+                                   help_text="Show or hide the article dates")
+    show_author = blocks.BooleanBlock(required=False, default=False,
+                                     help_text="Show or hide the article authors")
+    
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context)
+        
+        # Import here to avoid circular imports
+        from news.models import NewsArticlePage
+        from wagtail.models import Site
+        
+        # Get the current page from the parent context
+        current_page = parent_context.get('page') if parent_context else None
+        
+        if current_page:
+            # Get the current site
+            current_site = Site.find_for_request(parent_context.get('request'))
+            
+            # Get the top articles ordered by date, filtered by the current site
+            articles = NewsArticlePage.objects.live().filter(
+                path__startswith=current_site.root_page.path
+            ).order_by('-date')[:10]  # Fetch a few extra
+        else:
+            # Fallback if we can't determine the current site
+            articles = NewsArticlePage.objects.live().order_by('-date')[:10]
+        
+        context['articles'] = articles
+        return context
+    
+    class Meta:
+        icon = 'list-ul'
+        template = 'blocks/top_articles_block.html'
+        label = 'Top Articles'
+
+
+
 
 
 # Main StreamField block for use in page models
@@ -211,6 +292,8 @@ class BaseStreamBlock(blocks.StreamBlock):
     document = DocumentBlock()
     cta = CallToActionBlock()
     accordion = AccordionBlock()
+    subscribe = SubscribeBlock()
+    top_articles = TopArticlesBlock()
  
     two_column = TwoColumnBlock()
     carousel = CarouselBlock()
@@ -218,3 +301,5 @@ class BaseStreamBlock(blocks.StreamBlock):
     
     class Meta:
         icon = 'placeholder'
+
+

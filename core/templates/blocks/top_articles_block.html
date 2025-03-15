@@ -1,0 +1,55 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="top-articles-block py-4">
+    <div class="container">
+        {% if value.title %}
+            <h2 class="mb-4">{{ value.title }}</h2>
+        {% endif %}
+        
+        <div class="row">
+            {% with number=value.number_of_articles|default:4 %}
+                {% for article in articles|slice:":number" %}
+                    <div class="col-md-{% if number <= 2 %}6{% elif number <= 4 %}3{% else %}4{% endif %} mb-4">
+                        <div class="card h-100">
+                            {% if value.show_images and article.image %}
+                                <div class="card-img-top">
+                                    {% image article.image fill-400x250 as article_image %}
+                                    <a href="{% pageurl article %}">
+                                        <img src="{{ article_image.url }}" alt="{{ article_image.alt }}" class="img-fluid">
+                                    </a>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{% pageurl article %}" class="text-decoration-none">{{ article.title }}</a>
+                                </h5>
+                                
+                                <div class="card-meta mb-2">
+                                    {% if value.show_date %}
+                                        <span class="text-muted me-3">
+                                            <i class="fa fa-calendar-alt me-1"></i> {{ article.date|date:"M d, Y" }}
+                                        </span>
+                                    {% endif %}
+                                    
+                                    {% if value.show_author and article.author %}
+                                        <span class="text-muted">
+                                            <i class="fa fa-user me-1"></i> {{ article.author }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                
+                                <p class="card-text">{{ article.intro|truncatewords:20 }}</p>
+                                <a href="{% pageurl article %}" class="btn btn-sm btn-outline-primary">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info">No articles found.</div>
+                    </div>
+                {% endfor %}
+            {% endwith %}
+        </div>
+    </div>
+</div> 

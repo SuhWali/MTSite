@@ -1,34 +1,59 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<div class="carousel-container position-relative mb-4">
-    <div id="carousel-{{ id }}" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            {% for slide in value.slides %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    {% if slide.image %}
-                        {% image slide.image fill-1200x600 class="d-block w-100" %}
-                    {% endif %}
-                    {% if slide.caption %}
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>{{ slide.caption }}</h5>
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ id }}" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ id }}" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+<div id="carousel-{{ id }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+    {% if value.show_indicators and value.items|length > 1 %}
+    <div class="carousel-indicators">
+        {% for item in value.items %}
+        <button type="button" data-bs-target="#carousel-{{ id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
     </div>
+    {% endif %}
+    
+    <div class="carousel-inner">
+        {% for item in value.items %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            {% image item.image fill-1200x600 as carousel_img %}
+            <img src="{{ carousel_img.url }}" class="d-block w-100" alt="{{ carousel_img.alt }}">
+            
+            {% if item.title or item.text %}
+            <div class="carousel-caption d-none d-md-block">
+                {% if item.title %}<h5>{{ item.title }} hello world</h5>{% endif %}
+                {% if item.text %}<p>{{ item.text }}</p>{% endif %}
+                
+                {% if item.link_type != 'none' %}
+                    {% if item.link_type == 'page' and item.page_link %}
+                        <a href="{% pageurl item.page_link %}" class="btn btn-primary">{{ item.link_text|default:"Read more" }}</a>
+                    {% elif item.link_type == 'external' and item.external_link %}
+                        <a href="{{ item.external_link }}" class="btn btn-primary" target="_blank" rel="noopener">{{ item.link_text|default:"Read more" }}</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if value.show_arrows and value.items|length > 1 %}
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ id }}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ id }}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    {% endif %}
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        new bootstrap.Carousel(document.getElementById('carousel-{{ id }}'));
+        const carousel = document.getElementById('carousel-{{ id }}');
+        if (carousel) {
+            const carouselInstance = new bootstrap.Carousel(carousel, {
+                interval: 6000
+            });
+            // Force start the carousel
+            carouselInstance.cycle();
+        }
     });
 </script> 

@@ -3,17 +3,263 @@
 
 {% block body_class %}template-homepage{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Home page specific styling */
+    .home-content-container {
+        margin-top: 5rem;
+        position: relative;
+        z-index: 10;
+        background-color: #fff;
+        padding-top: 2rem;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+    }
+    
+    /* Enhanced section styling */
+    .home-section {
+        margin-bottom: 4rem;
+        padding: 2rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .home-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 119, 182, 0.1);
+    }
+    
+    .home-section-title {
+        position: relative;
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        font-size: 2rem;
+    }
+    
+    .home-section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+    
+    /* Enhance the rich text content */
+    .home-rich-content {
+        padding: 2.5rem;
+        background-color: rgba(144, 224, 239, 0.1);
+        border-radius: 12px;
+        border-left: 4px solid var(--primary);
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 5px 15px rgba(0, 119, 182, 0.05);
+    }
+    
+    .home-rich-content h2 {
+        color: var(--primary-dark);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .home-rich-content p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--dark);
+    }
+    
+    /* Add animated water wave effect */
+    .wave-divider {
+        position: relative;
+        height: 100px;
+        margin: 3rem 0;
+        overflow: hidden;
+    }
+    
+    .wave-divider::before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%2390e0ef' opacity='.25'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%2390e0ef' opacity='.5'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%2390e0ef' opacity='.75'%3E%3C/path%3E%3C/svg%3E");
+        background-size: 50% 100%;
+        animation: wave 15s linear infinite;
+    }
+    
+    @keyframes wave {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+    
+    /* Call to action button */
+    .home-cta {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+        margin-top: 1.5rem;
+    }
+    
+    .home-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 119, 182, 0.4);
+        color: white;
+    }
+    
+    /* Featured content highlight */
+    .featured-highlight {
+        background: linear-gradient(135deg, rgba(144, 224, 239, 0.2) 0%, rgba(3, 4, 94, 0.05) 100%);
+        border-radius: 16px;
+        padding: 3rem;
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .featured-highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%230077b6' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.5;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .home-section-title {
+            font-size: 1.75rem;
+        }
+        
+        .featured-highlight {
+            padding: 2rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .home-content-container {
+            margin-top: 3rem;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        
+        .home-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+        }
+        
+        .home-section-title {
+            font-size: 1.5rem;
+        }
+        
+        .wave-divider {
+            height: 70px;
+            margin: 2rem 0;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .home-content-container {
+            margin-top: 2rem;
+        }
+        
+        .home-section {
+            padding: 1rem;
+        }
+        
+        .home-rich-content {
+            padding: 1.5rem;
+        }
+        
+        .featured-highlight {
+            padding: 1.5rem;
+        }
+        
+        .wave-divider {
+            height: 50px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <div>
-        <h1>{{ page.title }}</h1>
-        {% image page.image fill-480x320 %}
-        <p>{{ page.hero_text }}</p>
-        {% if page.hero_cta_link %}
-            <a href="{% pageurl page.hero_cta_link %}">
-                {% firstof page.hero_cta page.hero_cta_link.title %}
-            </a>
+    {% if page.header %}
+        {% for block in page.header %}
+            {% include_block block with page=page %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container home-content-container">
+        <div class="row">
+            <div class="col-12">
+                {% if page.body %}
+                    <div class="home-rich-content">
+                        {{ page.body|richtext }}
+                        <a href="#" class="home-cta">Learn More</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if page.accordion %}
+            <div class="home-section">
+                <h2 class="home-section-title">Frequently Asked Questions</h2>
+                {% for block in page.accordion %}
+                    {% include_block block with page=page %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="wave-divider"></div>
+
+        {% if page.image %}
+            <div class="home-section">
+                <h2 class="home-section-title">Featured Content</h2>
+                <div class="featured-highlight">
+                    {% for block in page.image %}
+                        {% include_block block with page=page %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if page.top_articles %}
+            <div class="home-section">
+                <h2 class="home-section-title">Latest Articles</h2>
+                {% for block in page.top_articles %}
+                    {% include_block block with page=page %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="wave-divider"></div>
+
+        {% if page.subscribe %}
+            <div class="home-section">
+                <h2 class="home-section-title">Stay Updated</h2>
+                {% for block in page.subscribe %}
+                    {% include_block block with page=page %}
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
-
-  {{ page.body|richtext }}
 {% endblock content %}

@@ -1,45 +1,51 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
     {% load wagtailcore_tags %}
-    <a class="navbar-brand" href="/">
-      <span class="site-name text-primary">Hargeisa Water Agency</span>
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <img src="{% static '../media/images/logo.png' %}" alt="Hargeisa Water Agency Logo" class="logo" style="height: 40px; width: auto; margin-right: 10px;">
+      <span class="site-name fw-bold text-primary">Hargeisa Water Agency</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+          <a class="nav-link fw-medium px-3 {% if request.path == '/' %}active fw-bold{% endif %}" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if '/about-us/' in request.path %}active{% endif %}" href="/about-us/">About Us</a>
+          <a class="nav-link fw-medium px-3 {% if '/about-us/' in request.path %}active fw-bold{% endif %}" href="/about-us/">About Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if '/partners/' in request.path %}active{% endif %}" href="/partners/">Partners</a>
+          <a class="nav-link fw-medium px-3 {% if '/partners/' in request.path %}active fw-bold{% endif %}" href="/partners/">Partners</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle {% if '/departments/' in request.path %}active{% endif %}" href="#" id="departmentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle fw-medium px-3 {% if '/departments/' in request.path %}active fw-bold{% endif %}" href="#" id="departmentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Departments
           </a>
-          <ul class="dropdown-menu" aria-labelledby="departmentsDropdown">
-            <li><a class="dropdown-item" href="/departments/engineering/">Engineering</a></li>
-            <li><a class="dropdown-item" href="/departments/research/">Research</a></li>
-            <li><a class="dropdown-item" href="/departments/operations/">Operations</a></li>
+          <ul class="dropdown-menu shadow-sm border-light" aria-labelledby="departmentsDropdown">
+            <li><a class="dropdown-item py-2" href="/departments/engineering/">Engineering</a></li>
+            <li><a class="dropdown-item py-2" href="/departments/research/">Research</a></li>
+            <li><a class="dropdown-item py-2" href="/departments/operations/">Operations</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/departments/">All Departments</a></li>
+            <li><a class="dropdown-item py-2" href="/departments/">All Departments</a></li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if '/resources/' in request.path %}active{% endif %}" href="/resources/">Resources</a>
+          <a class="nav-link fw-medium px-3 {% if '/resources/' in request.path %}active fw-bold{% endif %}" href="/resources/">Resources</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if '/news/' in request.path %}active{% endif %}" href="/news/">News</a>
+          <a class="nav-link fw-medium px-3 {% if '/news/' in request.path %}active fw-bold{% endif %}" href="/news/">News</a>
         </li>
       </ul>
       <form class="d-flex" action="{% url 'search' %}" method="get">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
-        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <div class="input-group">
+          <input class="form-control border-end-0 rounded-start" type="search" placeholder="Search" aria-label="Search" name="query">
+          <button class="btn btn-primary rounded-end" type="submit">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
       </form>
     </div>
   </div>
