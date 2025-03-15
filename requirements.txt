@@ -25,6 +25,7 @@ opencv-python==4.11.0.86
 openpyxl==3.1.5
 pillow==11.1.0
 pillow_heif==0.21.0
+psycopg2-binary==2.9.10
 pycparser==2.22
 requests==2.32.3
 rustface==0.1.0
@@ -34,5 +35,5 @@ telepath==0.3.1
 typing_extensions==4.12.2
 urllib3==2.3.0
 wagtail==6.4.1
-wheel==0.45.1
+Wand==0.6.13
 Willow==1.9.0
