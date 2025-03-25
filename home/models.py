@@ -60,10 +60,11 @@ class HomePage(Page):
 
         # modify your content_panels:
     content_panels = Page.content_panels + [
+        FieldPanel("header"),
         MultiFieldPanel(
             [
          
-                FieldPanel("header"),
+               
                 FieldPanel("accordion"),
                 FieldPanel("image"),
                 FieldPanel('body'),
@@ -72,6 +73,7 @@ class HomePage(Page):
                 
                 
             ],
+            
             heading="Hero section",
         ),
        

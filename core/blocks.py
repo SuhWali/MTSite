@@ -294,6 +294,7 @@ class BaseStreamBlock(blocks.StreamBlock):
     accordion = AccordionBlock()
     subscribe = SubscribeBlock()
     top_articles = TopArticlesBlock()
+    card = CardBlock()
  
     two_column = TwoColumnBlock()
     carousel = CarouselBlock()
