@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block content %}
+    {% if page.content %}
+        {% for block in page.content %}
+        {% if block.block_type == 'carousel' %}
+        {% include_block block with template="blocks/minor_carousel_block.html" %}
+        {% else %}
+        {% include_block block %}
+        {% endif %}
+
+       
+        {% endfor %}
+    {% endif %}
+    
+{% endblock %}
+

@@ -1,4 +1,4 @@
-{% load navigation_tags wagtailcore_tags %}
+{% load navigation_tags wagtailcore_tags menu_tags %}
 
 <footer class="bg-primary text-white py-4 mt-5">
   <div class="container">
@@ -37,10 +37,11 @@
       <div class="col-md-2 mb-3 mb-md-0">
         <h5>Links</h5>
         <ul class="list-unstyled">
-          <li><a href="/" class="text-white">Home</a></li>
-          <li><a href="/about-us/" class="text-white">About Us</a></li>
-          <li><a href="/partners/" class="text-white">Partners</a></li>
-          <li><a href="/departments/" class="text-white">Departments</a></li>
+          
+          {% flat_menu 'mainlinks' %}
+
+
+
         </ul>
       </div>
       <div class="col-md-2 mb-3 mb-md-0">
@@ -48,7 +49,7 @@
         <ul class="list-unstyled">
           <li><a href="/resources/" class="text-white">Resources</a></li>
           <li><a href="/news/" class="text-white">News</a></li>
-          <li><a href="/search/" class="text-white">Search</a></li>
+
         </ul>
       </div>
       <div class="col-md-4">

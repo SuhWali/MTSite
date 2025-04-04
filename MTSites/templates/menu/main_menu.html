@@ -1,0 +1,14 @@
+{% load menu_tags %}
+
+<ul>
+{% for item in menu_items %}
+    {% if item.language == 'en' %}
+    <li >
+        <a href="{{ item.href }}">{{ item.link_text }}</a>
+        {% if item.has_children_in_menu %}
+            {% sub_menu item %}
+        {% endif %}
+    </li>
+    {% endif %}
+{% endfor %}
+</ul>

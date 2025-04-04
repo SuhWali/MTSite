@@ -1,0 +1,261 @@
+{% load wagtailcore_tags %}
+
+<div class="testimonials-block my-5">
+    {% if value.title %}
+    <h2 class="testimonials-title text-center mb-4">{{ value.title }}</h2>
+    {% endif %}
+    
+    <div class="testimonials-grid">
+        {% for testimonial in value.testimonials %}
+        <div class="testimonial-item">
+            <div class="video-container">
+                <div class="video-embed">
+                    {{ testimonial.video }}
+                </div>
+                <div class="video-preview-overlay">
+                    {% if testimonial.quote %}
+                    <div class="preview-quote">
+                        <span class="quote-mark">"</span>
+                        {{ testimonial.quote }}
+                        <span class="quote-mark">"</span>
+                    </div>
+                    {% endif %}
+                    <div class="play-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-info">
+                <h4 class="testimonial-name">{{ testimonial.name }}</h4>
+                {% if testimonial.role %}
+                <p class="testimonial-role">{{ testimonial.role }}</p>
+                {% endif %}
+                {% if testimonial.quote %}
+                <p class="testimonial-quote-preview"><em>"{{ testimonial.quote|truncatechars:60 }}"</em></p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.testimonials-block {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.testimonials-title {
+    font-size: 2rem;
+    color: #003366;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.testimonials-title:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #0077B6, #00B4D8);
+    margin: 0.5rem auto 0;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 2rem;
+}
+
+.testimonial-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.video-embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.video-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none; /* This makes the overlay clickable instead */
+}
+
+.video-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 51, 102, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    z-index: 2; /* Make overlay appear above the video */
+}
+
+.testimonial-item:hover .video-preview-overlay {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.preview-quote {
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.quote-mark {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00B4D8;
+}
+
+.play-icon {
+    color: white;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.testimonial-item:hover .play-icon {
+    transform: scale(1.2);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1.2); }
+}
+
+.testimonial-info {
+    padding: 1.5rem;
+    background: white;
+}
+
+.testimonial-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    color: #003366;
+}
+
+.testimonial-role {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+}
+
+.testimonial-quote-preview {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Make the videos clickable
+    const videoContainers = document.querySelectorAll('.video-container');
+    
+    videoContainers.forEach(container => {
+        // When clicking on the container, trigger the embedded video
+        container.addEventListener('click', function(e) {
+            // Get the iframe inside this container
+            const iframe = this.querySelector('iframe');
+            
+            // Only proceed if we found an iframe
+            if (iframe) {
+                // Get the current iframe src
+                let src = iframe.src;
+                
+                // If YouTube video, add autoplay parameter
+                if (src.includes('youtube.com') || src.includes('youtu.be')) {
+                    // Remove existing autoplay parameter if it exists
+                    src = src.replace(/(&|\?)autoplay=1/g, '');
+                    
+                    // Add autoplay parameter
+                    if (src.includes('?')) {
+                        src += '&autoplay=1';
+                    } else {
+                        src += '?autoplay=1';
+                    }
+                    
+                    // Update the iframe src to trigger autoplay
+                    iframe.src = src;
+                    
+                    // Make the iframe focusable and give it focus to allow keyboard control
+                    iframe.setAttribute('tabindex', '0');
+                    iframe.focus();
+                    
+                    // Enable pointer events for direct interaction
+                    iframe.style.pointerEvents = 'auto';
+                    
+                    // Hide the overlay
+                    const overlay = this.querySelector('.video-preview-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '0';
+                        overlay.style.pointerEvents = 'none';
+                    }
+                }
+            }
+        });
+    });
+    
+    // Handle mobile touch
+    const testimonialItems = document.querySelectorAll('.testimonial-item');
+    
+    testimonialItems.forEach(item => {
+        item.addEventListener('touchstart', function() {
+            const overlay = this.querySelector('.video-preview-overlay');
+            if (overlay && overlay.style.opacity !== '1') {
+                overlay.style.opacity = '1';
+                // Prevent immediate click-through on first touch
+                event.preventDefault();
+            }
+        });
+    });
+});
+</script> 

@@ -340,6 +340,23 @@
     <!-- <h1>{{ page.title }}</h1> -->
     <div class="intro">{{ page.intro|richtext }}</div>
     
+    <!-- Add search form here -->
+    <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+            <form action="{% url 'search' %}" method="get" class="search-form">
+                <div class="input-group">
+                    <input name="query" type="text" placeholder="Search articles..." 
+                           class="form-control" value="{{ search_query|default_if_none:'' }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     {% if current_tag %}
     <div class="alert current-tag-alert mb-4 d-flex align-items-center justify-content-between">
         <div>

@@ -1,0 +1,66 @@
+<div class="statistics-block bg-{{ value.background_style }}">
+    {% if value.title %}
+        <h2 class="statistics-title">{{ value.title }}</h2>
+    {% endif %}
+    <div class="statistics-grid">
+        {% for stat in value.statistics %}
+            <div class="statistic-item">
+                <div class="statistic-number">{{ stat.number }}</div>
+                <div class="statistic-description">{{ stat.description }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .statistics-block {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.statistics-block.bg-light {
+    background-color: rgba(200, 230, 255, 0.1);
+}
+
+.statistics-block.bg-dark {
+    background-color: #1e3d59;
+    color: white;
+}
+
+.statistics-block.bg-gradient {
+    background: linear-gradient(135deg, #1e3d59, #17a2b8);
+    color: white;
+}
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.statistic-item {
+    padding: 1.5rem;
+}
+
+.statistic-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #17a2b8;
+    margin-bottom: 0.5rem;
+}
+
+.bg-dark .statistic-number,
+.bg-gradient .statistic-number {
+    color: white;
+}
+
+.statistic-description {
+    font-size: 1rem;
+    line-height: 1.4;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+</style>

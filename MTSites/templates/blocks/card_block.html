@@ -1,21 +1,239 @@
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
 
-<div class="block-card card border mb-4 shadow-sm">
-    {% if value.image %}
-    <div class="card-img-top">
-        {% image value.image fill-800x450 class="w-100" %}
+<div class="services-section">
+    <div class="cards-container">
+        <div class="cards-track">
+            {% for card in value.cards %}
+            <div class="card-wrapper">
+                <div class="service-card">
+                    {% if card.image %}
+                    <div class="card-icon">
+                        {% image card.image fill-64x64 class="img-fluid" %}
+                    </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <h3 class="card-title">{{ card.title }}</h3>
+                        {% if card.text %}
+                        <div class="card-text">{{ card.text|richtext }}</div>
+                        {% endif %}
+                        {% if card.link %}
+                        <div class="card-link-wrapper">
+                            <a href="{{ card.link }}" class="card-link">
+                                {{ card.link_text }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {# Duplicate cards for seamless scrolling #}
+            {% for card in value.cards %}
+            <div class="card-wrapper">
+                <div class="service-card">
+                    {% if card.image %}
+                    <div class="card-icon">
+                        {% image card.image fill-64x64 class="img-fluid" %}
+                    </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <h3 class="card-title">{{ card.title }}</h3>
+                        {% if card.text %}
+                        <div class="card-text">{{ card.text|richtext }}</div>
+                        {% endif %}
+                        {% if card.link %}
+                        <div class="card-link-wrapper">
+                            <a href="{{ card.link }}" class="card-link">
+                                {{ card.link_text }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endif %}
-    <div class="card-body">
-        <h3 class="card-title fw-semibold mb-2">{{ value.title }}</h3>
-        {% if value.text %}
-        <div class="card-text text-secondary mb-3">{{ value.text }}</div>
-        {% endif %}
-        {% if value.link %}
-        <a href="{{ value.link }}" class="btn btn-link text-primary p-0">
-            {{ value.link_text }}
-        </a>
-        {% endif %}
-    </div>
-</div> 
+</div>
+
+<style>
+.services-section {
+    padding: 2rem 0;
+    position: relative;
+    z-index: 10;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.cards-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    overflow: hidden;
+}
+
+.cards-track {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+@media (min-width: 769px) {
+    .cards-track {
+        animation: scroll 40s linear infinite;
+        width: max-content;
+    }
+
+    .cards-track:hover {
+        animation-play-state: paused;
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.card-wrapper {
+    flex: 0 0 auto;
+    width: 280px;
+}
+
+.service-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 119, 182, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 119, 182, 0.1);
+    border-color: rgba(0, 119, 182, 0.2);
+}
+
+.card-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(3, 169, 244, 0.1), rgba(0, 119, 182, 0.1));
+    border-radius: 12px;
+    padding: 1rem;
+    flex-shrink: 0;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.card-title {
+    color: var(--primary-dark, #003366);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.card-text {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.card-link-wrapper {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary, #0077B6);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.card-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary, #0077B6);
+    transition: width 0.3s ease;
+}
+
+.card-link:hover {
+    color: var(--primary-dark, #003366);
+}
+
+.card-link:hover::after {
+    width: 100%;
+}
+
+.card-link svg {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card-link:hover svg {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .cards-track {
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: none;
+        width: 100%;
+    }
+
+    .card-wrapper {
+        width: 100%;
+    }
+    
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .card-text {
+        -webkit-line-clamp: 3;
+    }
+}
+</style> 

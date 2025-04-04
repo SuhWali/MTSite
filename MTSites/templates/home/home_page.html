@@ -5,6 +5,75 @@
 
 {% block extra_css %}
 <style>
+    /* Enhanced WhatsApp floating button */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        transition: all 0.3s ease;
+
+        border-radius: 50%;
+        padding: 10px;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .whatsapp-float img {
+        width: 40px;
+        height: 40px;
+        transition: all 0.3s ease;
+    }
+
+    .whatsapp-float::before {
+        content: 'Chat with us!';
+        position: absolute;
+        right: 70px;
+        background-color: #fff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #075E54;
+        opacity: 0;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .whatsapp-float:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+
+    .whatsapp-float:hover::before {
+        opacity: 1;
+        right: 75px;
+    }
+
+    .whatsapp-float:hover img {
+        transform: rotate(10deg);
+    }
+
+    /* Pulse animation for attention */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+        }
+    }
+
+    .whatsapp-float {
+        animation: pulse 2s infinite;
+    }
+
     /* Home page specific styling */
     .home-content-container {
         margin-top: 5rem;
@@ -197,69 +266,146 @@
         .wave-divider {
             height: 50px;
         }
+
+        .whatsapp-float {
+            bottom: 15px;
+            right: 15px;
+            padding: 8px;
+        }
+
+        .whatsapp-float img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .whatsapp-float::before {
+            display: none;
+        }
+    }
+
+    /* Translation Selector Styling */
+    .translation-selector {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 100;
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+    }
+
+    .translation-link {
+        text-decoration: none;
+        color: var(--primary-dark);
+        font-weight: 500;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    .translation-link:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 119, 182, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .translation-selector {
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.75rem;
+        }
+        
+        .translation-link {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+        }
+    }
+
+    .notification-banner {
+        width: 100%;
+        color: white;
+        padding: 0.75rem 0;
+        position: relative;
+        z-index: 1030; /* Higher than navbar */
     }
 </style>
 {% endblock %}
 
+
+
 {% block content %}
+
+{% block pre_content %}
+    {% if page.notification_banner %}
+        {% for block in page.notification_banner %}
+            {% include_block block %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+<!-- Floating Button (Fixed Position) -->
+<a href="https://wa.link/4ick1r" 
+   class="whatsapp-float" 
+   target="_blank" 
+   rel="noopener noreferrer">
+   <img src="../../../media/images/2496112.png" alt="Chat on WhatsApp" width="60">
+</a>
+
+<!-- Translation Selector -->
+<!-- <div class="translation-selector">
+    {% if page %}
+        {% for translation in page.get_translations.live %}
+            <a href="{% pageurl translation %}" 
+               class="translation-link" 
+               rel="alternate" 
+               hreflang="{{ translation.locale.language_code }}">
+                {{ translation.locale.get_display_name }}
+            </a>
+        {% endfor %}
+    {% endif %}
+</div> -->
+
+{% if page %}
+    {% for translation in page.get_translations.live %}
+        <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ translation.locale.language_code }}">
+            {{ translation.locale.language_code }}
+        </a>
+    {% endfor %}
+{% endif %}
+
     {% if page.header %}
         {% for block in page.header %}
-            {% include_block block with page=page %}
-        {% endfor %}
+        {% include_block page.header with template="blocks/hero_carousel_block.html" %}        {% endfor %}
     {% endif %}
 
     <div class="container home-content-container">
         <div class="row">
             <div class="col-12">
-                {% if page.body %}
-                    <div class="home-rich-content">
-                        {{ page.body|richtext }}
-                        <a href="#" class="home-cta">Learn More</a>
-                    </div>
+                
+            {% for block in page.main_body %}
+                {% if block.block_type == 'body' %}
+                <div class="home-rich-content">
+                    {% include_block block %}
+                    <a href="#" class="home-cta">Learn More</a>
+                </div>
+                
+                {% else %}
+                {% include_block block %}
                 {% endif %}
+            {% endfor %}
             </div>
         </div>
 
-        {% if page.accordion %}
-            <div class="home-section">
-                <h2 class="home-section-title">Frequently Asked Questions</h2>
-                {% for block in page.accordion %}
-                    {% include_block block with page=page %}
-                {% endfor %}
-            </div>
-        {% endif %}
+        
 
-        <div class="wave-divider"></div>
 
-        {% if page.image %}
-            <div class="home-section">
-                <h2 class="home-section-title">Featured Content</h2>
-                <div class="featured-highlight">
-                    {% for block in page.image %}
-                        {% include_block block with page=page %}
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-
-        {% if page.top_articles %}
-            <div class="home-section">
-                <h2 class="home-section-title">Latest Articles</h2>
-                {% for block in page.top_articles %}
-                    {% include_block block with page=page %}
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <div class="wave-divider"></div>
-
-        {% if page.subscribe %}
-            <div class="home-section">
-                <h2 class="home-section-title">Stay Updated</h2>
-                {% for block in page.subscribe %}
-                    {% include_block block with page=page %}
-                {% endfor %}
-            </div>
-        {% endif %}
     </div>
 {% endblock content %}

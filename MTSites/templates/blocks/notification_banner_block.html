@@ -1,0 +1,153 @@
+{% if value.is_enabled %}
+<div id="notification-banner-{{ id }}" class="notification-banner bg-{{ value.style }}">
+    <div class="container">
+        <div class="notification-content">
+            {% if value.icon %}
+            <div class="notification-icon">
+                <i class="fas {{ value.icon }}"></i>
+            </div>
+            {% endif %}
+            
+            <div class="notification-text">
+                {{ value.text }}
+            </div>
+            
+            {% if value.link_text and value.link_url %}
+            <div class="notification-action">
+                <a href="{{ value.link_url }}" class="notification-link">{{ value.link_text }}</a>
+            </div>
+            {% endif %}
+            
+            {% comment %}
+            <!-- Removed the dismissible button option -->
+            {% endcomment %}
+        </div>
+    </div>
+</div>
+
+<style>
+.notification-banner {
+    width: 100%;
+    color: white;
+    padding: 0.75rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050; /* Higher than navbar */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.notification-banner.bg-info {
+    background-color: #0dcaf0;
+}
+
+.notification-banner.bg-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.notification-banner.bg-danger {
+    background-color: #dc3545;
+}
+
+.notification-banner.bg-success {
+    background-color: #198754;
+}
+
+.notification-banner.bg-primary {
+    background-color: #0d6efd;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.notification-icon {
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.notification-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.notification-text p {
+    margin: 0;
+}
+
+.notification-action {
+    margin-left: 1rem;
+}
+
+.notification-link {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.notification-link:hover {
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+/* This class will be added to body when notification is active */
+body.has-notification-banner {
+    padding-top: 0; /* Will be set dynamically */
+    transition: padding-top 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .notification-content {
+        flex-direction: column;
+        padding: 0.5rem 0;
+        text-align: center;
+    }
+    
+    .notification-icon {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .notification-action {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+}
+</style>
+
+<script>
+// Initialize the notification banner when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('notification-banner-{{ id }}');
+    if (!banner) return;
+    
+    // Apply padding to the body
+    applyNotificationPadding(banner);
+    
+    // Make sure banner is visible and at the top of the page
+    banner.style.display = 'block';
+    document.body.classList.add('has-notification-banner');
+    
+    // Force browser to recognize the banner at the top by moving it to the beginning of body
+    document.body.insertBefore(banner, document.body.firstChild);
+    
+    // Handle window resize to adjust padding
+    window.addEventListener('resize', function() {
+        applyNotificationPadding(banner);
+    });
+});
+
+function applyNotificationPadding(banner) {
+    // Get the height of the banner
+    const bannerHeight = banner.offsetHeight;
+    
+    // Apply padding to body equal to banner height
+    document.body.style.paddingTop = bannerHeight + 'px';
+}
+</script>
+{% endif %} 

@@ -1,0 +1,81 @@
+{# In your Wagtail project's templates directory, create a folder named 'blocks' #}
+{# Inside the 'blocks' folder, create a file named 'image_and_text_block.html' #}
+
+{% load wagtailimages_tags %}
+
+<div class="image-text-block {{ self.background_color }}">
+    <div class="image-container">
+        {% image self.image width-800 %}
+    </div>
+    <div class="text-container">
+        <h3 class="title">{{ self.title }}</h3>
+        <h2 class="name">{{ self.name }}</h2>
+        <p class="body-text">{{ self.text }}</p>
+    </div>
+</div>
+
+<style>
+    /* In your Wagtail project's static CSS file (e.g., your_app/static/css/your_style.css) */
+
+.image-text-block {
+    display: flex;
+    margin-bottom: 20px; /* Adjust spacing as needed */
+    position: relative; /* For absolute positioning of text */
+}
+
+.image-container {
+    flex: 0 0 50%; /* Adjust image width ratio */
+}
+
+.image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.text-container {
+    flex: 0 0 50%; /* Adjust text width ratio */
+    padding: 40px; /* Adjust padding as needed */
+    color: white; /* Default text color */
+    position: absolute;
+    right: 0;
+    top: 20px; /* Adjust vertical positioning for overlap */
+    bottom: 20px; /* Adjust vertical positioning for overlap */
+    width: 60%; /* Adjust width for overlap */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.image-text-block.green .text-container {
+    background-color: #28a745; /* Example green color */
+}
+
+.image-text-block.blue .text-container {
+    background-color: #007bff; /* Example blue color */
+}
+
+.image-text-block.purple .text-container {
+    background-color: #6f42c1; /* Example purple color */
+}
+
+.image-text-block.orange .text-container {
+    background-color: #fd7e14; /* Example orange color */
+}
+
+.text-container .title {
+    font-size: 1.5em; /* Adjust as needed */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.text-container .name {
+    font-size: 2em; /* Adjust as needed */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.text-container .body-text {
+    font-size: 1em; /* Adjust as needed */
+    line-height: 1.6;
+}
+
+</style>

@@ -4,10 +4,10 @@ from wagtail.snippets.models import register_snippet
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
-
+from wagtail.search import index
 
 @register_snippet
-class Author(models.Model):
+class Author(index.Indexed, models.Model):
     """
     Author snippet model for reuse across the site
     """
@@ -23,6 +23,11 @@ class Author(models.Model):
     bio = RichTextField(blank=True)
     email = models.EmailField(blank=True)
     twitter_handle = models.CharField(max_length=50, blank=True)
+
+    # search_fields = [
+    #     index.SearchField('first_name', boost=10),
+    #     index.SearchField('last_name', boost=10)
+    # ]
     
     panels = [
         MultiFieldPanel([

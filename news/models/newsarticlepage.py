@@ -25,6 +25,7 @@ class NewsArticlePage(Page):
     """
     A news article page
     """
+    parent_page_types = ['news.NewsIndexPage']
     date = models.DateField("Post date", default=timezone.now)
     intro = models.CharField(max_length=250)
     body = RichTextField(blank=True, null=True)
@@ -58,7 +59,10 @@ class NewsArticlePage(Page):
     
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
-        index.SearchField('body'),
+        index.RelatedFields('author', [
+            index.SearchField('first_name'),
+            index.SearchField('last_name'),
+        ]),
         index.SearchField('tags'),
     ]
     
@@ -130,6 +134,11 @@ class NewsArticlePage(Page):
         
         # Round up to nearest minute, with a minimum of 1 minute
         return max(1, ceil(reading_time_minutes))
+    
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        # Add any search-related context if necessary
+        return context
     
     class Meta:
         verbose_name = "News Article" 

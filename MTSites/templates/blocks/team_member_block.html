@@ -1,0 +1,234 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="team-section">
+    {% if value.title %}
+    <h2 class="team-title">{{ value.title }}</h2>
+    {% endif %}
+    
+    <div class="team-container">
+        <!-- Left sidebar with team member list -->
+        <div class="team-list">
+            {% for member in value.team_members %}
+            <div class="team-member-item {% if forloop.first %}active{% endif %}" data-member-id="{{ forloop.counter0 }}">
+                {% image member.image fill-60x60 class="member-thumbnail" %}
+                <div class="member-brief">
+                    <h3 class="member-name">{{ member.name }}</h3>
+                    <p class="member-role">{{ member.role }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Right content area for member details -->
+        {% for member in value.team_members %}
+        <div class="member-detail-section {% if forloop.first %}active{% endif %}" data-member-id="{{ forloop.counter0 }}">
+            <div class="member-image-container">
+                {% image member.image width-800 class="member-large-image" %}
+            </div>
+            <div class="member-details">
+                <h2 class="member-detail-name">{{ member.name }}</h2>
+                <h3 class="member-detail-role">{{ member.role }}</h3>
+                <div class="member-bio">{{ member.bio }}</div>
+                <div class="social-links">
+                    {% if member.facebook_link %}
+                    <a href="{{ member.facebook_link }}" class="social-link" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.twitter_link %}
+                    <a href="{{ member.twitter_link }}" class="social-link" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.instagram_link %}
+                    <a href="{{ member.instagram_link }}" class="social-link" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .team-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .team-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 2rem;
+    }
+
+    .team-container {
+        display: flex;
+        gap: 3rem;
+        min-height: 500px;
+    }
+
+    /* Left sidebar styles */
+    .team-list {
+        flex: 0 0 300px;
+        border-right: 1px solid #eee;
+        padding-right: 1rem;
+    }
+
+    .team-member-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .team-member-item:hover {
+        background-color: #f5f9ff;
+    }
+
+    .team-member-item.active {
+        background-color: #f5f9ff;
+    }
+
+    .member-thumbnail {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .member-brief {
+        flex: 1;
+    }
+
+    .member-name {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .member-role {
+        margin: 0.2rem 0 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Right content area styles */
+    .member-detail-section {
+        flex: 1;
+        display: none;
+    }
+
+    .member-detail-section.active {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .member-image-container {
+        flex: 0 0 50%;
+    }
+
+    .member-large-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .member-details {
+        flex: 1;
+    }
+
+    .member-detail-name {
+        font-size: 2.5rem;
+        margin: 0 0 0.5rem;
+    }
+
+    .member-detail-role {
+        font-size: 1.2rem;
+        color: #666;
+        margin: 0 0 1.5rem;
+    }
+
+    .member-bio {
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: #333;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Mobile responsive */
+    @media screen and (max-width: 768px) {
+        .team-container {
+            flex-direction: column;
+        }
+
+        .team-list {
+            flex: none;
+            border-right: none;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-detail-section.active {
+            flex-direction: column;
+        }
+
+        .member-image-container {
+            flex: none;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const memberItems = document.querySelectorAll('.team-member-item');
+    const detailSections = document.querySelectorAll('.member-detail-section');
+
+    memberItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const memberId = this.dataset.memberId;
+
+            // Update active states for list items
+            memberItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // Update visible detail section
+            detailSections.forEach(section => {
+                if (section.dataset.memberId === memberId) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        });
+    });
+});
+</script> 

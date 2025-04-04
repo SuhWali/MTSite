@@ -29,6 +29,17 @@ INSTALLED_APPS = [
     "search",
     "news",
     "core",
+    "about",
+    "contactus",
+    "applications",
+    "departments",
+    "menus",
+    'wagtail_localize',
+    'wagtail.locales',
+    'wagtail_modeladmin',
+    'wagtailmenus',
+    'django_recaptcha',
+    "wagtailcaptcha",
     "wagtail.contrib.settings",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -52,6 +63,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -60,6 +72,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    
 ]
 
 ROOT_URLCONF = "MTSites.urls"
@@ -78,6 +91,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
+                'wagtailmenus.context_processors.wagtailmenus',
             ],
         },
     },
@@ -124,16 +138,30 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+RECAPTCHA_PUBLIC_KEY = '6Lcq8QkrAAAAALotWXRtLyjz2SsO6qMsGd_3pOo_'
+RECAPTCHA_PRIVATE_KEY = '6Lcq8QkrAAAAAG4u-XUHoLC21MEGhUF_ht7M-y6r'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+
 
 TIME_ZONE = "UTC"
-
+WAGTAIL_I18N_ENABLED = True
 USE_I18N = True
 
-USE_TZ = True
+USE_L10N = True
+
+LANGUAGE_CODE = "en"
+
+
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
+    ('ar', "Arabic"),
+    ('en', "English"),
+    ('sl', "Somali"),
+]
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -173,7 +201,7 @@ STORAGES = {
 # can exceed this limit within Wagtail's page editor.
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
-
+WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME = "submenu_items"
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "MTSites"
@@ -188,10 +216,12 @@ WAGTAILSEARCH_BACKENDS = {
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
+# WAGTAILADMIN_BASE_URL = "http://example.com"
 
 # Allowed file extensions for documents in the document library.
 # This can be omitted to allow all files, but note that this may present a security risk
 # if untrusted users are allowed to upload files -
 # see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
+
+

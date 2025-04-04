@@ -326,7 +326,7 @@
 
 <div class="container">
     <article class="article-content">
-        <h1 class="mb-4">{{ page.title }}</h1>
+        <!-- <h1 class="mb-4">{{ page.title }}</h1> -->
         
         <div class="article-meta mb-4">
             <span class="article-date me-3">
@@ -394,7 +394,9 @@
         </div>
 
         <!-- Related Articles Section -->
+      
         {% with related_articles=page.get_related_articles %}
+        
         {% if related_articles %}
         <div class="related-articles mt-5 pt-4 border-top">
             <h3 class="mb-4">Related Articles</h3>

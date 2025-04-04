@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load wagtailcore_tags %}
+
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h1>{{ page.title }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm p-4">
+                {% if page.intro %}
+                    <div class="form-intro mb-4">
+                        {{ page.intro|richtext }}
+                    </div>
+                {% endif %}
+                
+                <form action="{% pageurl page %}" method="POST" class="contact-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary px-5">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-intro {
+        color: var(--primary-dark);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .contact-form label {
+        font-weight: 500;
+        color: var(--primary-dark);
+    }
+    
+    .contact-form .required {
+        color: #dc3545;
+        margin-left: 4px;
+    }
+    
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form input[type="number"],
+    .contact-form textarea,
+    .contact-form select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus,
+    .contact-form select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.25);
+        outline: none;
+    }
+    
+    .contact-form textarea {
+        min-height: 120px;
+    }
+</style>
+{% endblock %}

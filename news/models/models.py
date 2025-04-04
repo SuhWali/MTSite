@@ -31,6 +31,7 @@ class NewsIndexPage(Page):
     """
     The main news page that holds all news articles
     """
+    subpage_types = ['news.NewsArticlePage']
    
     subscribe = StreamField([
         ('subscribe', SubscribeBlock()),
