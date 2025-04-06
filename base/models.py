@@ -59,10 +59,6 @@ class FooterText(
 
 
 
-
-
-
-
 @register_setting
 class NavigationSettings(BaseGenericSetting):
     linkedin_url = models.URLField(verbose_name="LinkedIn URL", blank=True)
