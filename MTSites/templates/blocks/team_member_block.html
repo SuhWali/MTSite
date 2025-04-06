@@ -1,4 +1,9 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+
+<link rel="stylesheet" href="{% static 'block/css/main-person.css' %}">
+
+
 
 <div class="team-section">
     {% if value.title %}
@@ -32,17 +37,17 @@
                 <div class="social-links">
                     {% if member.facebook_link %}
                     <a href="{{ member.facebook_link }}" class="social-link" target="_blank">
-                        <i class="fab fa-facebook"></i>
+                        <i class="bi bi-facebook fs-4"></i>
                     </a>
                     {% endif %}
                     {% if member.twitter_link %}
                     <a href="{{ member.twitter_link }}" class="social-link" target="_blank">
-                        <i class="fab fa-twitter"></i>
+                        <i class="bi bi-twitter fs-4"></i>
                     </a>
                     {% endif %}
                     {% if member.instagram_link %}
                     <a href="{{ member.instagram_link }}" class="social-link" target="_blank">
-                        <i class="fab fa-instagram"></i>
+                        <i class="bi bi-instagram fs-4"></i>
                     </a>
                     {% endif %}
                 </div>

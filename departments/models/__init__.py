@@ -1,7 +1,7 @@
 from .MainDepartment import MainPage
-from .FinanceDepartment import FinanceDepartmentPage
+from .SubDepartment import SubDepartmentPage
 
 __all__ = [
     'MainPage',
-    'FinanceDepartmentPage',
+    'SubDepartmentPage',
 ]

@@ -2,75 +2,101 @@
 
 <footer class="bg-primary text-white py-4 mt-5">
   <div class="container">
-    <div class="row">
-      <div class="col-md-4 mb-3 mb-md-0">
-        <h5>MTSites</h5>
-        <p class="small">
+    <div class="row gy-4">
+      <!-- About Section -->
+      <div class="col-md-4">
+        <h5>About Us</h5>
+        <p class="small mb-3">
           {% get_footer_text %}
         </p>
         
-        {% with linkedin_url=settings.base.NavigationSettings.linkedin_url github_url=settings.base.NavigationSettings.github_url mastodon_url=settings.base.NavigationSettings.mastodon_url %}
-          {% if linkedin_url or github_url or mastodon_url %}
-            <div class="social-links mt-3">
-              <h6>Follow us:</h6>
+        {% with linkedin_url=settings.base.NavigationSettings.linkedin_url facebook_url=settings.base.NavigationSettings.facebook_url twitter_url=settings.base.NavigationSettings.twitter_url instagram_url=settings.base.NavigationSettings.instagram_url youtube_url=settings.base.NavigationSettings.youtube_url  %}
+          {% if linkedin_url or facebook_url  or twitter_url or instagram_url or youtube_url %}
+            <div class="social-links">
+              <h6>Connect With Us</h6>
               <div class="d-flex gap-3">
-                {% if github_url %}
-                  <a href="{{ github_url }}" class="text-white" target="_blank" aria-label="GitHub">
-                    <i class="bi bi-github fs-4"></i>
-                  </a>
-                {% endif %}
                 {% if linkedin_url %}
-                  <a href="{{ linkedin_url }}" class="text-white" target="_blank" aria-label="LinkedIn">
-                    <i class="bi bi-linkedin fs-4"></i>
+                  <a href="{{ linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <i class="bi bi-linkedin"></i>
                   </a>
                 {% endif %}
-                {% if mastodon_url %}
-                  <a href="{{ mastodon_url }}" class="text-white" target="_blank" aria-label="Mastodon">
-                    <i class="bi bi-mastodon fs-4"></i>
+                {% if facebook_url %}
+                  <a href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
                   </a>
                 {% endif %}
+                {% if twitter_url %}
+                  <a href="{{ twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter">
+                    <i class="bi bi-twitter"></i>
+                  </a>
+                {% endif %}
+                {% if instagram_url %}
+                  <a href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                  </a>
+                {% endif %}
+                {% if youtube_url %}
+                  <a href="{{ youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                  </a>
+                {% endif %}
+                
               </div>
             </div>
           {% endif %}
         {% endwith %}
       </div>
-      <div class="col-md-2 mb-3 mb-md-0">
-        <h5>Links</h5>
+
+      <!-- Quick Links Section -->
+      <div class="col-md-2">
+        <h5>Quick Links</h5>
         <ul class="list-unstyled">
-          
           {% flat_menu 'mainlinks' %}
-
-
-
         </ul>
       </div>
-      <div class="col-md-2 mb-3 mb-md-0">
+
+      <!-- Resources Section -->
+      <div class="col-md-2">
         <h5>Resources</h5>
         <ul class="list-unstyled">
-          <li><a href="/resources/" class="text-white">Resources</a></li>
-          <li><a href="/news/" class="text-white">News</a></li>
+          {% flat_menu 'resource' %}
 
         </ul>
       </div>
+
+      <!-- Contact Section -->
       <div class="col-md-4">
-        <h5>Contact Us</h5>
-        <address class="small">
+        <h5>Get in Touch</h5>
+        <address>
           <strong>MTSites Headquarters</strong><br>
-          123 Water Street<br>
-          Ocean City, CA 90210<br>
-          <i class="bi bi-envelope"></i> <a href="mailto:info@mtsites.com" class="text-white">info@mtsites.com</a><br>
-          <i class="bi bi-telephone"></i> (123) 456-7890
+          <div class="mt-2">
+            <p class="mb-2">
+              <i class="bi bi-geo-alt"></i> 123 Water Street<br>
+              <span class="ms-4">Ocean City, CA 90210</span>
+            </p>
+            <p class="mb-2">
+              <i class="bi bi-envelope"></i>
+              <a href="mailto:info@mtsites.com">info@mtsites.com</a>
+            </p>
+            <p class="mb-0">
+              <i class="bi bi-telephone"></i>
+              <a href="tel:+11234567890">(123) 456-7890</a>
+            </p>
+          </div>
         </address>
       </div>
     </div>
-    <hr class="my-3 bg-light">
-    <div class="row">
-      <div class="col-md-6 small">
-        &copy; {% now "Y" %} MTSites. All rights reserved.
+
+    <hr class="my-4">
+
+    <!-- Footer Bottom -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="small mb-md-0">&copy; {% now "Y" %} MTSites. All rights reserved.</p>
       </div>
-      <div class="col-md-6 text-md-end small">
-        <a href="/privacy-policy/" class="text-white me-3">Privacy Policy</a>
-        <a href="/terms-of-service/" class="text-white">Terms of Service</a>
+      <div class="col-md-6 text-md-end">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/terms-of-service/">Terms of Service</a>
       </div>
     </div>
   </div>

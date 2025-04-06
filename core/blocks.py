@@ -257,6 +257,8 @@ class TopArticlesBlock(blocks.StructBlock):
                                    help_text="Show or hide the article dates")
     show_author = blocks.BooleanBlock(required=False, default=False,
                                      help_text="Show or hide the article authors")
+    view_all_link = blocks.URLBlock(required=False,
+                                   help_text="Link to the articles listing page")
     
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context)
@@ -275,7 +277,7 @@ class TopArticlesBlock(blocks.StructBlock):
             # Get the top articles ordered by date, filtered by the current site
             articles = NewsArticlePage.objects.live().filter(
                 path__startswith=current_site.root_page.path
-            ).order_by('-date')[:5]  # Fetch a few extra
+            ).order_by('-date')[:7]  # Fetch a few extra
         else:
             # Fallback if we can't determine the current site
             articles = NewsArticlePage.objects.live().order_by('-date')[:10]
@@ -461,23 +463,12 @@ class BaseStreamBlock(blocks.StreamBlock):
     Main streamfield block to be inherited by page models
     """
     heading = HeadingBlock()
-    statistics = StatisticsBlock()
     paragraph = blocks.RichTextBlock(icon='pilcrow')
-    image = ImageBlock()
     quote = QuoteBlock()
-    button = ButtonBlock()
-    video = VideoBlock()
-    document = DocumentBlock()
     cta = CallToActionBlock()
     accordion = AccordionBlock()
-    subscribe = SubscribeBlock()
-    top_articles = TopArticlesBlock()
-    card = CardBlock()
-    testimonials = TestimonialsBlock()
-    notification_banner = NotificationBannerBlock()
     two_column = TwoColumnBlock()
-    carousel = CarouselBlock()
-    embed = EmbedBlock(icon='media')
+    subscribe = SubscribeBlock()
     
     class Meta:
         icon = 'placeholder'

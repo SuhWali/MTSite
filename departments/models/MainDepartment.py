@@ -12,6 +12,8 @@ from core.blocks import CardBlock, HeadingBlock, StatisticsBlock, AccordionBlock
 
 class MainPage(Page):
     template = 'departments/main_department.html'
+
+    subpage_types = ['departments.SubDepartmentPage']  # Restricts subpages to SubDepartmentPage only
  
     content = StreamField(
         [

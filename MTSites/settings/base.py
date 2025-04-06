@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "contactus",
     "applications",
     "departments",
+    "resources",
     "menus",
     'wagtail_localize',
     'wagtail.locales',
@@ -74,6 +75,8 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     
 ]
+
+
 
 ROOT_URLCONF = "MTSites.urls"
 

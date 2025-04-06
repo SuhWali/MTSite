@@ -1,43 +1,45 @@
 {% load static menu_tags wagtailcore_tags %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded-navbar" style="background-color: #0077b6; border-radius: 0 0 15px 15px; margin: 0 10px;">
   <div class="container">
-   
+  
     <a class="navbar-brand d-flex align-items-center" href="/">
       <img src="{% static '../media/images/logo.png' %}" alt="Hargeisa Water Agency Logo" class="logo" style="height: 40px; width: auto; margin-right: 10px;">
-      <span class="site-name fw-bold text-primary">Hargeisa Water Agency</span>
+      <span class="site-name fw-bold text-white">Hargeisa Water Agency</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
-    
-        <li class="nav-item">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <!-- Language selector -->
+        <li class="nav-item me-3 mt-2">
           <div class="translation-selector">
             {% if page %}
                 {% for translation in page.get_translations.live %}
-                <p>{{ translation }}</p>
                     <a href="{% pageurl translation %}" 
-                       class="translation-link" 
-                       rel="alternate" 
-                       hreflang="{{ translation.locale.language_code }}">
+                      class="translation-link text-black" 
+                      rel="alternate" 
+                      hreflang="{{ translation.locale.language_code }}"
+                      style="font-size: 1rem; padding: 0 8px;">
                         {{ translation.locale.get_display_name }}
                     </a>
                 {% endfor %}
             {% endif %}
-        </div>
+          </div>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link fw-medium px-3 {% if request.path == '/' %}active fw-bold{% endif %}" href="/">Home</a>
+
+        
+        <!-- Dynamic menu based on language -->
+        <li class="nav-item menu-container">
+          {% if page.locale.language_code == 'en' %}
+            {% main_menu add_sub_menus_inline=True template="menu/main_menu.html" %}
+          {% elif page.locale.language_code == 'so' %}
+            {% main_menu add_sub_menus_inline=True template="menu/main_menu_so.html" %}
+          {% elif page.locale.language_code == 'ar' %}
+            {% main_menu add_sub_menus_inline=True template="menu/main_menu_ar.html" %}
+          {% endif %}
         </li>
-        {% if page.locale.language_code == 'en' %}
-        {% main_menu add_sub_menus_inline=True template="menu/main_menu.html" %}
-        {% elif page.locale.language_code == 'so' %}
-        {% main_menu add_sub_menus_inline=True template="menu/main_menu_so.html" %}
-        {% elif page.locale.language_code == 'ar' %}
-        {% main_menu add_sub_menus_inline=True template="menu/main_menu_ar.html" %}
-        {% endif %}
       </ul>
     </div>
   </div>

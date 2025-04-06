@@ -1,55 +1,116 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags static %}
 
-<div class="top-articles-block py-4">
+<link rel="stylesheet" href="{% static 'news/css/news-page.css' %}">
+
+<section class="top-articles-section py-5">
     <div class="container">
         {% if value.title %}
-            <h2 class="mb-4">{{ value.title }}</h2>
+            <div class="section-header text-center mb-5">
+                <h2 class="section-title">{{ value.title }}</h2>
+                <div class="section-divider"></div>
+            </div>
         {% endif %}
         
-        <div class="row">
+        <div class="row g-4">
             {% with number=value.number_of_articles|default:4 %}
                 {% for article in articles|slice:":number" %}
-                    <div class="col-md-{% if number <= 2 %}6{% elif number <= 4 %}3{% else %}4{% endif %} mb-4">
-                        <div class="card h-100">
-                            {% if value.show_images and article.image %}
-                                <div class="card-img-top">
-                                    {% image article.image fill-400x250 as article_image %}
-                                    <a href="{% pageurl article %}">
-                                        <img src="{{ article_image.url }}" alt="{{ article_image.alt }}" class="img-fluid">
-                                    </a>
-                                </div>
-                            {% endif %}
-                            
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a href="{% pageurl article %}" class="text-decoration-none">{{ article.title }}</a>
-                                </h5>
-                                
-                                <div class="card-meta mb-2">
-                                    {% if value.show_date %}
-                                        <span class="text-muted me-3">
-                                            <i class="fa fa-calendar-alt me-1"></i> {{ article.date|date:"M d, Y" }}
-                                        </span>
+                    {% if forloop.first and number > 3 %}
+                        <!-- Featured article for larger collections (takes full width) -->
+                        <div class="col-12 mb-4">
+                            <div class="card featured-article-card">
+                                <div class="row g-0">
+                                    {% if value.show_images and article.image %}
+                                        <div class="col-lg-6">
+                                            <div class="featured-img-container">
+                                                {% image article.image fill-800x500 as article_image %}
+                                                <a href="{% pageurl article %}" class="img-link">
+                                                    <img src="{{ article_image.url }}" alt="{{ article_image.alt }}" class="img-fluid">
+                                                </a>
+                                            </div>
+                                        </div>
                                     {% endif %}
-                                    
-                                    {% if value.show_author and article.author %}
-                                        <span class="text-muted">
-                                            <i class="fa fa-user me-1"></i> {{ article.author }}
-                                        </span>
-                                    {% endif %}
+                                    <div class="col-lg-{% if value.show_images and article.image %}6{% else %}12{% endif %}">
+                                        <div class="card-body d-flex flex-column h-100 p-4">
+                                            <h3 class="card-title mb-3">
+                                                <a href="{% pageurl article %}" class="text-decoration-none text-dark">{{ article.title }}</a>
+                                            </h3>
+                                            
+                                            <div class="card-meta mb-3">
+                                                {% if value.show_date %}
+                                                    <span class="date me-3">
+                                                        <i class="fa fa-calendar-alt me-1"></i> {{ article.date|date:"M d, Y" }}
+                                                    </span>
+                                                {% endif %}
+                                                
+                                                {% if value.show_author and article.author %}
+                                                    <span class="author">
+                                                        <i class="fa fa-user me-1"></i> {{ article.author }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            <p class="card-text flex-grow-1">{{ article.intro|truncatewords:50 }}</p>
+                                            <a href="{% pageurl article %}" class="btn btn-primary mt-auto">Continue Reading</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                                <p class="card-text">{{ article.intro|truncatewords:20 }}</p>
-                                <a href="{% pageurl article %}" class="btn btn-sm btn-outline-primary">Read more</a>
                             </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <!-- Regular articles in a grid -->
+                        <div class="col-md-6 col-lg-{% if number <= 2 %}6{% elif number <= 4 or forloop.counter > 1 %}4{% else %}3{% endif %}">
+                            <div class="card article-card h-100">
+                                {% if value.show_images and article.image %}
+                                    <div class="card-img-wrapper">
+                                        {% image article.image fill-400x250 as article_image %}
+                                        <a href="{% pageurl article %}">
+                                            <img src="{{ article_image.url }}" alt="{{ article_image.alt }}" class="card-img-top">
+                                            <div class="img-overlay"></div>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-meta mb-2">
+                                        {% if value.show_date %}
+                                            <span class="date me-3">
+                                                <i class="fa fa-calendar-alt me-1"></i> {{ article.date|date:"M d, Y" }}
+                                            </span>
+                                        {% endif %}
+                                        
+                                        {% if value.show_author and article.author %}
+                                            <span class="author">
+                                                <i class="fa fa-user me-1"></i> {{ article.author }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <h5 class="card-title">
+                                        <a href="{% pageurl article %}" class="text-decoration-none">{{ article.title }}</a>
+                                    </h5>
+                                    
+                                    <p class="card-text flex-grow-1">{{ article.intro|truncatewords:20 }}</p>
+                                    <a href="{% pageurl article %}" class="read-more mt-auto">
+                                        Read more <i class="fa fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% empty %}
                     <div class="col-12">
-                        <div class="alert alert-info">No articles found.</div>
+                        <div class="alert alert-info py-4 text-center">
+                            <i class="fa fa-info-circle me-2"></i> No articles found at this time.
+                        </div>
                     </div>
                 {% endfor %}
             {% endwith %}
         </div>
+        
+        {% if value.view_all_link %}
+            <div class="text-center mt-5">
+                <a href="{{ value.view_all_link }}" class="btn btn-outline-primary btn-lg">View All Articles</a>
+            </div>
+        {% endif %}
     </div>
-</div> 
+</section> 

@@ -15,7 +15,7 @@ from core.blocks import (
 
 
 
-class FinanceDepartmentPage(Page):
+class SubDepartmentPage(Page):
     template = 'departments/finance_department.html'
     parent_page_types = ['departments.MainPage']  # Restricts parent to MainPage only
     
@@ -37,5 +37,5 @@ class FinanceDepartmentPage(Page):
     ]
 
     class Meta:
-        verbose_name = "Finance Department"
-        verbose_name_plural = "Finance Departments" 
+        verbose_name = "Sub Department"
+        verbose_name_plural = "Sub Departments" 

@@ -1,5 +1,5 @@
 {% if value.is_enabled %}
-<div id="notification-banner-{{ id }}" class="notification-banner bg-{{ value.style }}">
+<div id="notification-banner-{{ id }}" class="notification-banner bg-{{ value.style }}" style="display: none;">
     <div class="container">
         <div class="notification-content">
             {% if value.icon %}
@@ -18,9 +18,11 @@
             </div>
             {% endif %}
             
-            {% comment %}
-            <!-- Removed the dismissible button option -->
-            {% endcomment %}
+            {% if value.is_dismissible %}
+            <button class="notification-close" onclick="dismissNotification('notification-banner-{{ id }}')">
+                <i class="fas fa-times"></i>
+            </button>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -95,6 +97,25 @@
     opacity: 0.9;
 }
 
+.notification-close {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
 /* This class will be added to body when notification is active */
 body.has-notification-banner {
     padding-top: 0; /* Will be set dynamically */
@@ -117,37 +138,112 @@ body.has-notification-banner {
         margin-left: 0;
         margin-top: 0.5rem;
     }
+    
+    .notification-close {
+        position: static;
+        margin-top: 0.5rem;
+    }
 }
 </style>
 
 <script>
-// Initialize the notification banner when the page loads
+// Initialize the notification banner rotation system
 document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.getElementById('notification-banner-{{ id }}');
-    if (!banner) return;
+    // Collect all notification banners
+    const notificationBanners = document.querySelectorAll('.notification-banner');
+    if (notificationBanners.length === 0) return;
     
-    // Apply padding to the body
-    applyNotificationPadding(banner);
-    
-    // Make sure banner is visible and at the top of the page
-    banner.style.display = 'block';
-    document.body.classList.add('has-notification-banner');
-    
-    // Force browser to recognize the banner at the top by moving it to the beginning of body
-    document.body.insertBefore(banner, document.body.firstChild);
-    
-    // Handle window resize to adjust padding
-    window.addEventListener('resize', function() {
-        applyNotificationPadding(banner);
-    });
+    // Initialize the rotation system
+    initNotificationRotation(notificationBanners);
 });
 
+// Function to initialize notification rotation
+function initNotificationRotation(banners) {
+    // Array to store active banners
+    const activeBanners = Array.from(banners);
+    let currentBannerIndex = 0;
+    let rotationInterval = 7000; // 7 seconds per notification
+    
+    // Prepare all banners
+    activeBanners.forEach(banner => {
+        // Move banners to the beginning of body
+        document.body.insertBefore(banner, document.body.firstChild);
+    });
+
+    // Function to show the current banner
+    function showCurrentBanner() {
+        // Hide all banners
+        activeBanners.forEach(banner => {
+            banner.style.display = 'none';
+        });
+        
+        // Show current banner if we have active banners
+        if (activeBanners.length > 0) {
+            const banner = activeBanners[currentBannerIndex];
+            banner.style.display = 'block';
+            
+            // Apply body padding based on the current banner's height
+            applyNotificationPadding(banner);
+            
+            // Add class to body
+            document.body.classList.add('has-notification-banner');
+            
+            // Increment index for next rotation
+            currentBannerIndex = (currentBannerIndex + 1) % activeBanners.length;
+        } else {
+            // No active banners, remove padding
+            document.body.style.paddingTop = '0';
+            document.body.classList.remove('has-notification-banner');
+            
+            // Clear interval if no banners left
+            clearInterval(rotationTimer);
+        }
+    }
+    
+    // Start with the first banner
+    showCurrentBanner();
+    
+    // Set up rotation timer if we have more than one banner
+    let rotationTimer = null;
+    if (activeBanners.length > 1) {
+        rotationTimer = setInterval(showCurrentBanner, rotationInterval);
+    }
+    
+    // Resize handler
+    window.addEventListener('resize', function() {
+        const visibleBanner = document.querySelector('.notification-banner[style*="display: block"]');
+        if (visibleBanner) {
+            applyNotificationPadding(visibleBanner);
+        }
+    });
+}
+
+// Function to apply padding to body
 function applyNotificationPadding(banner) {
     // Get the height of the banner
     const bannerHeight = banner.offsetHeight;
     
     // Apply padding to body equal to banner height
     document.body.style.paddingTop = bannerHeight + 'px';
+}
+
+// Function to dismiss a notification
+function dismissNotification(bannerId) {
+    const banner = document.getElementById(bannerId);
+    if (banner) {
+        // Hide the banner
+        banner.style.display = 'none';
+        
+        // Remove from DOM
+        banner.parentNode.removeChild(banner);
+        
+        // If no more visible banners, remove padding
+        const visibleBanners = document.querySelectorAll('.notification-banner[style*="display: block"]');
+        if (visibleBanners.length === 0) {
+            document.body.style.paddingTop = '0';
+            document.body.classList.remove('has-notification-banner');
+        }
+    }
 }
 </script>
 {% endif %} 

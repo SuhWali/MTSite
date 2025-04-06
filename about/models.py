@@ -1,12 +1,12 @@
 from django.db import models
 
 # Create your models here.
-from core.blocks import CarouselBlock
+
 from wagtail.fields import StreamField
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
 
-from core.blocks import TimelineSection, MissionVisionSection, TeamMemberBlock, CardBlock, HeadingBlock, CallToActionBlock
+from core.blocks import  CarouselBlock, MissionVisionSection, TeamMemberBlock, CardBlock, HeadingBlock, CallToActionBlock
 
 class AboutPage(Page):
     """About page"""

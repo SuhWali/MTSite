@@ -66,15 +66,19 @@ class FooterText(
 @register_setting
 class NavigationSettings(BaseGenericSetting):
     linkedin_url = models.URLField(verbose_name="LinkedIn URL", blank=True)
-    github_url = models.URLField(verbose_name="GitHub URL", blank=True)
-    mastodon_url = models.URLField(verbose_name="Mastodon URL", blank=True)
+    facebook_url = models.URLField(verbose_name="Facebook URL", blank=True)
+    instagram_url = models.URLField(verbose_name="Instagram URL", blank=True)
+    youtube_url = models.URLField(verbose_name="YouTube URL", blank=True)
+    twitter_url = models.URLField(verbose_name="Twitter URL", blank=True)
 
     panels = [
         MultiFieldPanel(
             [
                 FieldPanel("linkedin_url"),
-                FieldPanel("github_url"),
-                FieldPanel("mastodon_url"),
+                FieldPanel("facebook_url"),
+                FieldPanel("instagram_url"),
+                FieldPanel("youtube_url"),
+                FieldPanel("twitter_url"),
             ],
             "Social settings",
         )

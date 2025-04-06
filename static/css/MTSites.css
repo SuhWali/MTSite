@@ -1,0 +1,324 @@
+/* Water-themed color variables */
+:root {
+    --primary: #0077b6;       /* Medium blue */
+    --primary-light: #90e0ef; /* Light blue */
+    --primary-dark: #03045e;  /* Dark blue */
+    --secondary: #48cae4;     /* Cyan blue */
+    --accent: #00b4d8;        /* Bright blue */
+    --light: #caf0f8;         /* Very light blue */
+    --dark: #023e8a;          /* Navy blue */
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --med-gray: #dee2e6;
+    --dark-gray: #343a40;
+}
+
+/* Bootstrap overrides */
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary) !important;
+}
+
+.bg-light-blue {
+    background-color: var(--primary-light) !important;
+}
+
+.bg-dark-blue {
+    background-color: var(--primary-dark) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-white {
+    color: var(--white) !important;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Navbar styling */
+.navbar {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    padding: 0.75rem 1rem;
+    border-radius: 0 0 20px 20px;
+    margin: 0 15px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #ffffff;
+    font-weight: 700;
+    border-bottom: 3px solid #ffffff;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.site-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.translation-selector {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0;
+}
+
+.translation-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+    margin: 0 5px;
+}
+
+.translation-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Fix responsive behavior */
+@media (max-width: 992px) {
+    .navbar {
+        border-radius: 0 0 15px 15px;
+        margin: 0 5px;
+    }
+    
+    .navbar-collapse {
+        padding: 1rem 0;
+        background-color: #0077b6;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .navbar-nav {
+        padding-left: 1rem;
+    }
+    
+    .navbar-dark .navbar-nav .nav-link.active {
+        border-bottom: none;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+    }
+    
+    .translation-selector {
+        padding-left: 0.5rem;
+    }
+    
+    .dropdown-menu {
+        border-radius: 10px;
+        margin: 0.25rem 1rem;
+        width: calc(100% - 2rem);
+    }
+}
+
+.dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: none;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.dropdown-item:first-child {
+    border-radius: 12px 12px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #e9f5fb;
+    color: #0077b6;
+}
+
+.navbar-dark .dropdown-menu {
+    border-top: 3px solid #90e0ef;
+}
+
+/* Custom classes for main menu */
+.main-menu-item {
+    font-size: 1.1rem;
+    color: #ffffff;
+    padding: 0.6rem 1rem;
+}
+
+.main-menu-item:hover {
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+/* Sticky footer setup */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container.mt-4 {
+    flex: 1 0 auto;
+}
+
+/* Footer styling */
+footer {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+footer h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+footer a {
+    color: var(--light);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--white);
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+footer .social-links i {
+    transition: transform 0.3s ease;
+}
+
+footer .social-links a:hover i {
+    transform: translateY(-3px);
+}
+
+footer hr.bg-light {
+    opacity: 0.2;
+    height: 1px;
+}
+
+footer address {
+    line-height: 1.6;
+    color: var(--light);
+}
+
+footer .list-unstyled li {
+    margin-bottom: 0.5rem;
+}
+
+/* Hero section */
+.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 4rem 0;
+}
+
+.hero h1 {
+    font-weight: 700;
+}
+
+/* Card styling */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    color: var(--primary-dark);
+}
+
+/* Water-related custom components */
+.water-stats {
+    background-color: var(--light);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.water-stats .stat-item {
+    text-align: center;
+}
+
+.water-stats .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.water-stats .stat-label {
+    color: var(--dark-gray);
+    font-weight: 500;
+} 

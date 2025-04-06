@@ -1,12 +1,12 @@
 {% load menu_tags %}
 
-<ul>
+<ul class="main-menu">
 {% for item in menu_items %}
     {% if item.language == 'so' %}
-    <li >
-        <a href="{{ item.href }}">{{ item.link_text }}</a>
+    <li class="menu-item{% if item.active %} active{% endif %}{% if item.has_children_in_menu %} has-children{% endif %}">
+        <a href="{{ item.href }}" class="menu-link">{{ item.link_text }}</a>
         {% if item.has_children_in_menu %}
-            {% sub_menu item %}
+            {% sub_menu item template="menu/sub_menu.html" %}
         {% endif %}
     </li>
     {% endif %}
