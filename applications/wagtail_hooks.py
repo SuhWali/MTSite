@@ -27,16 +27,28 @@ modeladmin_register(ApplicationFormFieldAdmin)
 def register_view_submissions_menu_item():
     return ActionMenuItem(
         'View Submissions',
-        '#submissions',
+        lambda page: f'/admin/forms/submissions/{page.id}/',
         name='view-submissions',
         icon_name='doc-full',
         order=10
     )
 
-# Only show the submissions menu item for ApplicationTrackingPage
+# Only show the submissions menu item for ApplicationTrackingPage with submissions
 @hooks.register('construct_page_action_menu')
 def filter_page_action_menu_items(menu_items, request, context):
     page = context.get('page')
+    
+    # If not an ApplicationTrackingPage, remove the view-submissions button
     if not isinstance(page, ApplicationTrackingPage):
         menu_items = [item for item in menu_items if item.name != 'view-submissions']
+        return menu_items
+    
+    # If it is an ApplicationTrackingPage, check if there are submissions
+    from wagtail.contrib.forms.models import FormSubmission
+    has_submissions = FormSubmission.objects.filter(page_id=page.id).exists()
+    
+    if not has_submissions:
+        # Remove the view-submissions button if there are no submissions
+        menu_items = [item for item in menu_items if item.name != 'view-submissions']
+    
     return menu_items
