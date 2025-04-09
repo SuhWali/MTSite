@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+    .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .timeline::after {
+        content: '';
+        position: absolute;
+        width: 6px;
+        background-color: #2196F3;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -3px;
+    }
+
+    .timeline-block {
+        padding: 10px 40px;
+        position: relative;
+        width: 50%;
+        box-sizing: border-box;
+    }
+
+    .timeline-block::after {
+        content: '';
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: -17px;
+        background-color: white;
+        border: 4px solid #2196F3;
+        top: 15px;
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .left {
+        left: 0;
+    }
+
+    .right {
+        left: 50%;
+    }
+
+    .right::after {
+        left: -16px;
+    }
+
+    .timeline-content {
+        padding: 20px 30px;
+        background-color: white;
+        position: relative;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .swiper {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 40px;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        background: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .application-form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .btn-submit {
+        background-color: #2196F3;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-submit:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .form-field {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-field label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .form-field .help-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    .form-field .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .form-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if page.intro %}
+    <div class="intro">
+        {{ page.intro|richtext }}
+    </div>
+    {% endif %}
+    
+    <!-- Carousel Section -->
+  
+
+
+           
+                
+
+                    {% if page.content %}
+                   
+                    {% include_block page.content with template="blocks/minor_carousel_block.html" %}
+                   
+                    {% endif %}
+
+ 
+
+
+    <!-- Timeline Section -->
+    <div class="timeline">
+        <div class="timeline-block left">
+            <div class="timeline-content">
+                <h2>Application Submitted</h2>
+                <p>Your application has been received</p>
+            </div>
+        </div>
+        <div class="timeline-block right">
+            <div class="timeline-content">
+                <h2>Under Review</h2>
+                <p>Your application is being reviewed</p>
+            </div>
+        </div>
+        <div class="timeline-block left">
+            <div class="timeline-content">
+                <h2>Interview Scheduled</h2>
+                <p>Interview has been scheduled</p>
+            </div>
+        </div>
+        <div class="timeline-block right">
+            <div class="timeline-content">
+                <h2>Decision Made</h2>
+                <p>Final decision has been made</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Form -->
+    <div class="application-form" id="applicationForm">
+        <h2>Submit Your Application</h2>
+        
+        {% if form_submission %}
+        <div class="form-success">
+            {{ page.thank_you_text|richtext }}
+        </div>
+        {% else %}
+            <form action="{% pageurl page %}" method="POST" id="applicationTrackingForm">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                    <div class="help-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="error-message">
+                        {% for error in field.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Swiper if it exists
+        const swiperContainer = document.querySelector('.swiper');
+        if (swiperContainer) {
+            const slides = swiperContainer.querySelectorAll('.swiper-slide');
+            if (slides.length > 0) {
+                const swiper = new Swiper('.swiper', {
+                    loop: slides.length > 1, // Only enable loop if more than one slide
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    autoplay: slides.length > 1 ? {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    } : false, // Only enable autoplay if more than one slide
+                });
+            } else {
+                // Hide navigation if no slides
+                const pagination = swiperContainer.querySelector('.swiper-pagination');
+                const nextButton = swiperContainer.querySelector('.swiper-button-next');
+                const prevButton = swiperContainer.querySelector('.swiper-button-prev');
+                
+                if (pagination) pagination.style.display = 'none';
+                if (nextButton) nextButton.style.display = 'none';
+                if (prevButton) prevButton.style.display = 'none';
+            }
+        }
+
+        // Form deadline handling
+        const form = document.getElementById('applicationTrackingForm');
+        if (!form) return;
+        
+        const deadlineInput = document.querySelector('input[name="deadline"]');
+        if (!deadlineInput) return;
+        
+        const submitBtn = document.getElementById('submitBtn');
+        if (!submitBtn) return;
+
+        function checkDeadline() {
+            if (!deadlineInput.value) return;
+            
+            const deadline = new Date(deadlineInput.value);
+            const now = new Date();
+            
+            if (now > deadline) {
+                submitBtn.disabled = true;
+                form.style.opacity = '0.5';
+                alert('Application deadline has passed');
+            } else {
+                submitBtn.disabled = false;
+                form.style.opacity = '1';
+            }
+        }
+
+        checkDeadline();
+        deadlineInput.addEventListener('change', checkDeadline);
+    });
+</script>
+{% endblock %}

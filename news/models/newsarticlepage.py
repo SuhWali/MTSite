@@ -14,8 +14,10 @@ from wagtail.search import index
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField, StreamField
 
-from core.blocks import BaseStreamBlock
+from core.blocks import BaseStreamBlock, SubscribeBlock
 from modelcluster.contrib.taggit import ClusterTaggableManager
+
+from ..models.models import NewsArticlePageTag # Ensure the through model is imported or referenced
 
 
 
@@ -37,6 +39,11 @@ class NewsArticlePage(Page):
         related_name='+'
     )
     body2 = StreamField(BaseStreamBlock(), blank=True, null=True)
+    SubscribeBlock = StreamField(
+        [('subscribe', SubscribeBlock())],
+        blank=True,
+        null=True
+    )
     
     # Add author field
     author = models.ForeignKey(
@@ -48,13 +55,7 @@ class NewsArticlePage(Page):
     )
     
     # Add tags field
-    # tags = ClusterTaggableManager(through=NewsArticlePageTag, blank=True)
-    tags = models.ManyToManyField(
-        'taggit.Tag',
-        through='news.NewsArticlePageTag',
-        blank=True,
-        related_name='news_articles'
-    )
+    tags = ClusterTaggableManager(through=NewsArticlePageTag, blank=True, verbose_name="Tags", help_text="A comma-separated list of tags.")
     
     
     search_fields = Page.search_fields + [
@@ -73,6 +74,7 @@ class NewsArticlePage(Page):
         FieldPanel('image'),
         FieldPanel('body2'),
         FieldPanel('tags'),
+        FieldPanel('SubscribeBlock'),
     ]
     
     def get_related_articles(self):
@@ -141,4 +143,4 @@ class NewsArticlePage(Page):
         return context
     
     class Meta:
-        verbose_name = "News Article" 
+        verbose_name = "News Article"

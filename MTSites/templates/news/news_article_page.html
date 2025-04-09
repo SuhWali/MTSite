@@ -432,6 +432,12 @@
         </div>
         {% endif %}
         {% endwith %}
+   
+        <div> 
+            {% if page.SubscribeBlock %}
+            {% include_block page.SubscribeBlock %}
+        {% endif %}
+        </div>
 
         <div class="mt-5 pt-4 border-top">
             <a href="{{ page.get_parent.url }}" class="btn btn-outline-primary">&laquo; Back to News</a>

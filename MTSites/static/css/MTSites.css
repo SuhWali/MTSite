@@ -646,3 +646,16 @@ html[lang="ar"] .menu-item {
     transform: translateY(-1px);
     box-shadow: 0 2px 6px rgba(0, 119, 182, 0.2);
 }
+
+/* Navbar logo specific styles */
+.navbar .navbar-brand .logo {
+    height: 40px;
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Navbar translation link specific styles */
+.navbar .translation-selector .translation-link {
+    font-size: 1rem;
+    padding: 0 8px;
+}

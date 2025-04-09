@@ -14,6 +14,7 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
+    # path("applications/", include("applications.urls")),  # Removed as we're using Wagtail's page routing
 ]
 
 

@@ -1,92 +1,100 @@
-# from django.db import models
-# from wagtail.models import Page, Orderable
-# from wagtail.fields import StreamField, RichTextField
-# from wagtail.admin.panels import FieldPanel, InlinePanel
-# from modelcluster.fields import ParentalKey
-# from core.blocks import CarouselBlock, CardBlock
-# from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
+from django.db import models
+from django.core.validators import MinValueValidator
+from wagtail.models import Page
+from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.contrib.forms.models import AbstractFormField, AbstractForm
+from wagtail.contrib.forms.forms import FormBuilder
+from wagtail.search import index
+from modelcluster.fields import ParentalKey
+from django.utils import timezone
+from core.blocks import CarouselBlock
 
-# class JobPost(Orderable):
-#     page = ParentalKey('CareeJobDetailPagersPage', on_delete=models.CASCADE, related_name='jobs')
-#     title = models.CharField(max_length=255)
-#     type = models.CharField(max_length=50, choices=[
-#         ('full-time', 'Full Time'),
-#         ('part-time', 'Part Time'),
-#         ('internship', 'Internship'),
-#         ('contract', 'Contract'),
-#     ])
-#     location = models.CharField(max_length=255)
-#     department = models.CharField(max_length=255)
-#     is_active = models.BooleanField(default=True)
-#     posted_date = models.DateField(auto_now_add=True)
-#     closing_date = models.DateField(null=True, blank=True)
-#     description = RichTextField()
-#     requirements = RichTextField()
-#     responsibilities = RichTextField()
 
-#     panels = [
-#         FieldPanel('title'),
-#         FieldPanel('type'),
-#         FieldPanel('location'),
-#         FieldPanel('department'),
-#         FieldPanel('is_active'),
-#         FieldPanel('closing_date'),
-#         FieldPanel('description'),
-#         FieldPanel('requirements'),
-#         FieldPanel('responsibilities'),
-#     ]
 
-#     def __str__(self):
-#         return self.title
+class ApplicationFormField(AbstractFormField):
+    page = ParentalKey(
+        'ApplicationTrackingPage',
+        on_delete=models.CASCADE,
+        related_name='form_fields'
+    )
 
-#     class Meta:
-#         verbose_name = "Job Posting"
-#         verbose_name_plural = "Job Postings"
+    panels = [
+        FieldPanel('label'),
+        FieldPanel('help_text'),
+        FieldPanel('required'),
+        FieldPanel('field_type', classname="formbuilder-type"),
+        FieldPanel('choices'),
+        FieldPanel('default_value'),
+    ]
 
-# class CareersPage(Page):
-#     template = "applications/careers_page.html"
+    class Meta:
+        ordering = ['sort_order']
+        verbose_name = "Form Field"
+        verbose_name_plural = "Form Fields"
+
+class ApplicationTrackingPage(AbstractForm):
+    intro = RichTextField(
+        blank=True,
+        help_text="Introduction text for the application page"
+    )
+    deadline = models.DateTimeField(
+        help_text="Application deadline",
+        null=True,
+        blank=True
+    )
     
-#     header = StreamField([
-#         ('header', CarouselBlock()),
-#     ], blank=True, null=True, use_json_field=True)
-    
-#     intro = RichTextField(blank=True)
-    
-#     content_panels = Page.content_panels + [
-#         FieldPanel("header"),
-#         FieldPanel("intro"),
-#         InlinePanel("jobs", label="Job Postings"),
-#     ]
+    content = StreamField(
+        [
 
-#     def get_context(self, request, *args, **kwargs):
-#         context = super().get_context(request, *args, **kwargs)
-#         context['active_jobs'] = self.jobs.filter(is_active=True).order_by('-posted_date')
-#         context['closed_jobs'] = self.jobs.filter(is_active=False).order_by('-closing_date')
-#         return context
+            ('carousel', CarouselBlock()),
 
-# class JobApplicationField(AbstractFormField):
-#     page = ParentalKey('JobDetailPage', on_delete=models.CASCADE, related_name='form_fields')
 
-# class JobDetailPage(AbstractForm):
-#     template = "applications/job_detail_page.html"
-#     landing_page_template = "applications/application_success.html"
+        ],
+        blank=True,
+        use_json_field=True,
+
+
+    )
+
     
-#     job = models.ForeignKey(
-#         JobPost,
-#         on_delete=models.CASCADE,
-#         related_name='detail_pages'
-#     )
-#     application_form_title = models.CharField(max_length=255, default="Apply Now")
-#     thank_you_text = RichTextField(blank=True)
-    
-#     content_panels = AbstractForm.content_panels + [
-#         FieldPanel("job"),
-#         FieldPanel("application_form_title"),
-#         InlinePanel('form_fields', label="Form fields"),
-#         FieldPanel('thank_you_text'),
-#     ]
+    # Form settings
+    thank_you_text = RichTextField(blank=True)
 
-#     def get_context(self, request, *args, **kwargs):
-#         context = super().get_context(request, *args, **kwargs)
-#         context['job'] = self.job
-#         return context
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+    ]
+
+    content_panels = AbstractForm.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('deadline'),
+        MultiFieldPanel([
+            FieldPanel('content'),
+         
+        ], heading="Carousel Content"),
+        InlinePanel('form_fields', label="Form Fields"),
+        FieldPanel('thank_you_text', heading="Thank You Text"),
+    ]
+
+    form_builder = FormBuilder
+
+    def get_form_fields(self):
+        return self.form_fields.all()
+    
+    def get_data_fields(self):
+        data_fields = [
+            ('submission_date', 'Submission Date'),
+        ]
+        data_fields += super().get_data_fields()
+        return data_fields
+    
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        # You can add custom form processing here
+        return form
+
+    def get_form_class(self):
+        return super().get_form_class()
+
+    class Meta:
+        verbose_name = "Application Tracking Page"

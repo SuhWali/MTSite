@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "departments",
     "resources",
     "menus",
+
     'wagtail_localize',
     'wagtail.locales',
     'wagtail_modeladmin',

@@ -468,8 +468,8 @@ class BaseStreamBlock(blocks.StreamBlock):
     cta = CallToActionBlock()
     accordion = AccordionBlock()
     two_column = TwoColumnBlock()
-    subscribe = SubscribeBlock()
-    
+    images = ImageBlock()
+ 
     class Meta:
         icon = 'placeholder'
 
