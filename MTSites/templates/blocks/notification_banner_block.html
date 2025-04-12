@@ -1,156 +1,35 @@
 {% if value.is_enabled %}
-<div id="notification-banner-{{ id }}" class="notification-banner bg-{{ value.style }}" style="display: none;">
+<div id="notification-banner-{{ id }}" class="alert alert-{{ value.style }} m-0 position-fixed w-100 top-0 start-0" style="display: none; z-index: 1050;">
     <div class="container">
-        <div class="notification-content">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
             {% if value.icon %}
-            <div class="notification-icon">
+            <div class="me-md-3 mb-2 mb-md-0 fs-5 text-center">
                 <i class="fas {{ value.icon }}"></i>
             </div>
             {% endif %}
             
-            <div class="notification-text">
+            <div class="fw-medium text-center text-md-start">
                 {{ value.text }}
             </div>
             
             {% if value.link_text and value.link_url %}
-            <div class="notification-action">
-                <a href="{{ value.link_url }}" class="notification-link">{{ value.link_text }}</a>
+            <div class="ms-md-3 mt-2 mt-md-0 text-center">
+                <a href="{{ value.link_url }}" class="alert-link">{{ value.link_text }}</a>
             </div>
             {% endif %}
             
             {% if value.is_dismissible %}
-            <button class="notification-close" onclick="dismissNotification('notification-banner-{{ id }}')">
-                <i class="fas fa-times"></i>
-            </button>
+            <button type="button" class="btn-close ms-md-auto mt-2 mt-md-0 mx-auto" onclick="dismissNotification('notification-banner-{{ id }}')" aria-label="Close"></button>
             {% endif %}
         </div>
     </div>
 </div>
 
-<style>
-.notification-banner {
-    width: 100%;
-    color: white;
-    padding: 0.75rem 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1050; /* Higher than navbar */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.notification-banner.bg-info {
-    background-color: #0dcaf0;
-}
-
-.notification-banner.bg-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.notification-banner.bg-danger {
-    background-color: #dc3545;
-}
-
-.notification-banner.bg-success {
-    background-color: #198754;
-}
-
-.notification-banner.bg-primary {
-    background-color: #0d6efd;
-}
-
-.notification-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.notification-icon {
-    margin-right: 0.75rem;
-    font-size: 1.25rem;
-}
-
-.notification-text {
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.notification-text p {
-    margin: 0;
-}
-
-.notification-action {
-    margin-left: 1rem;
-}
-
-.notification-link {
-    color: inherit;
-    text-decoration: underline;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.notification-link:hover {
-    text-decoration: none;
-    opacity: 0.9;
-}
-
-.notification-close {
-    position: absolute;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: inherit;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.7;
-}
-
-.notification-close:hover {
-    opacity: 1;
-}
-
-/* This class will be added to body when notification is active */
-body.has-notification-banner {
-    padding-top: 0; /* Will be set dynamically */
-    transition: padding-top 0.3s ease;
-}
-
-@media (max-width: 768px) {
-    .notification-content {
-        flex-direction: column;
-        padding: 0.5rem 0;
-        text-align: center;
-    }
-    
-    .notification-icon {
-        margin-right: 0;
-        margin-bottom: 0.5rem;
-    }
-    
-    .notification-action {
-        margin-left: 0;
-        margin-top: 0.5rem;
-    }
-    
-    .notification-close {
-        position: static;
-        margin-top: 0.5rem;
-    }
-}
-</style>
-
 <script>
 // Initialize the notification banner rotation system
 document.addEventListener('DOMContentLoaded', function() {
     // Collect all notification banners
-    const notificationBanners = document.querySelectorAll('.notification-banner');
+    const notificationBanners = document.querySelectorAll('[id^="notification-banner-"]');
     if (notificationBanners.length === 0) return;
     
     // Initialize the rotation system
@@ -211,7 +90,7 @@ function initNotificationRotation(banners) {
     
     // Resize handler
     window.addEventListener('resize', function() {
-        const visibleBanner = document.querySelector('.notification-banner[style*="display: block"]');
+        const visibleBanner = document.querySelector('[id^="notification-banner-"][style*="display: block"]');
         if (visibleBanner) {
             applyNotificationPadding(visibleBanner);
         }
@@ -238,7 +117,7 @@ function dismissNotification(bannerId) {
         banner.parentNode.removeChild(banner);
         
         // If no more visible banners, remove padding
-        const visibleBanners = document.querySelectorAll('.notification-banner[style*="display: block"]');
+        const visibleBanners = document.querySelectorAll('[id^="notification-banner-"][style*="display: block"]');
         if (visibleBanners.length === 0) {
             document.body.style.paddingTop = '0';
             document.body.classList.remove('has-notification-banner');

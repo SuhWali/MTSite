@@ -1,0 +1,25 @@
+{
+  "name": "mtsites",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scss": "sass --watch MTSites/static/scss/main.scss MTSites/static/css/main.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SuhWali/MTSite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SuhWali/MTSite/issues"
+  },
+  "homepage": "https://github.com/SuhWali/MTSite#readme",
+  "devDependencies": {
+    "bootstrap": "^5.3.5",
+    "sass": "^1.86.3"
+  }
+}

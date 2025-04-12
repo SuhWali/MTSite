@@ -1,22 +1,157 @@
 {# In your Wagtail project's templates directory, create a folder named 'blocks' #}
 {# Inside the 'blocks' folder, create a file named 'image_and_text_block.html' #}
 
-{% load wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static %}
 
-<link rel="stylesheet" href="{% static 'block/css/main-person.css' %}">
+{# Remove the external CSS link as styles will be inline or replaced by Bootstrap #}
 
-<div class="main-person-section">
-    <div class="image-text-block {{ value.background_color }}">
-        <div class="image-container">
-            {% image value.image width-800 format-webp alt=value.name class="person-image" %}
+
+{# Wrap in a container for consistent padding/width, adjust my-* for spacing #}
+<div class="main-person-section container my-4 my-md-5">
+    {# Add position-relative for the absolute positioning of the text container on lg+ screens #}
+    <div class="image-text-block bg-gradient-custom bg-{{ value.background_color|default:'primary' }} row g-0 d-flex flex-column flex-md-row shadow-lg rounded-4 overflow-hidden position-relative">
+        {# Image column: takes full width on small, half on medium, more on large. Needs h-100 #}
+        <div class="image-container col-12 col-md-6 col-lg-7 order-md-1 h-100"> 
+            {# Use img-fluid, object-fit, ensure height 100% #}
+            {% image value.image width-1200 format-webp alt=value.name class="person-image img-fluid w-100 h-100" loading="lazy" %}
         </div>
-        <div class="text-container">
+        {# Text column: takes full width on small, half on medium, less on large. Vertically center content on medium+ #}
+        {# Remove justify-content-center here as it will be handled by absolute positioning on large screens #}
+        <div class="text-container col-12 col-md-6 col-lg-5 order-md-0 d-flex flex-column text-white p-4 p-lg-5">
             {% if value.title %}
-                <h4 class="title">{{ value.title }}</h4>
+                {# Bootstrap typography: smaller, bold, uppercase, less opacity #}
+                <h4 class="title text-uppercase fw-semibold small mb-1 opacity-75">{{ value.title }}</h4> 
             {% endif %}
-            <h3 class="name">{{ value.name }}</h3>
-            <div class="body-text">{{ value.text }}</div>
+             {# Bootstrap typography: larger heading size, bold, margin #}
+            <h3 class="name h2 fw-bold mb-3">{{ value.name }}</h3>
+            {# Bootstrap typography: lead paragraph or default, slight opacity #}
+            <div class="body-text lead opacity-75">{{ value.text | richtext }}</div> 
         </div>
     </div>
 </div>
+
+{# Add necessary custom styles here #}
+<style>
+/* Custom styles needed beyond Bootstrap */
+
+.image-container {
+    overflow: hidden; /* Ensure image scaling doesn't break rounded corners */
+    min-height: 300px; /* Add min-height for smaller screens */
+}
+
+.person-image {
+    transition: transform 0.6s ease;
+    /* width: 100%; Ensure image covers the container width - handled by w-100 */
+    /* height: 100%; Ensure image covers the container height - handled by h-100 */
+    object-fit: cover; /* Cover the area, cropping if needed */
+}
+
+.image-text-block:hover .person-image {
+    transform: scale(1.05);
+}
+
+.text-container {
+    position: relative; /* Needed for the ::before element and stacking context */
+    z-index: 1; /* Ensure text is above potential background elements if any */
+    /* Default padding handled by Bootstrap p-4 */
+}
+
+/* Decorative highlight element */
+.text-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%);
+    width: 5px;
+    height: 60px; /* Default height */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    transition: height 0.3s ease; /* Smooth transition */
+}
+
+/* Gradient backgrounds using CSS variables */
+.bg-gradient-custom {
+    background: linear-gradient(135deg, var(--bs-primary, #0077B6), var(--bs-primary-dark, #003d5b));
+}
+.bg-gradient-custom.bg-green {
+    background: linear-gradient(135deg, var(--bs-success, #198754), color-mix(in srgb, var(--bs-success, #198754) 85%, black));
+}
+.bg-gradient-custom.bg-blue { 
+     background: linear-gradient(135deg, var(--bs-primary, #0d6efd), color-mix(in srgb, var(--bs-primary, #0d6efd) 85%, black));
+}
+.bg-gradient-custom.bg-purple {
+     background: linear-gradient(135deg, var(--bs-purple, #6f42c1), color-mix(in srgb, var(--bs-purple, #6f42c1) 85%, black));
+}
+.bg-gradient-custom.bg-orange {
+     background: linear-gradient(135deg, var(--bs-orange, #fd7e14), color-mix(in srgb, var(--bs-orange, #fd7e14) 85%, black));
+}
+/* Add other color overrides similarly */
+
+/* Medium screens only (before the large screen absolute positioning kicks in) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .image-container {
+         min-height: 400px; /* Ensure enough height */
+    }
+     .text-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+        padding: var(--bs-spacer) * 2 !important; /* Use BS variable for padding */
+    }
+    .text-container::before {
+        height: 70px;
+    }
+}
+
+/* Large screens: Complex absolute positioning for text */
+@media (min-width: 992px) {
+    .image-container {
+        min-height: 500px; /* Taller minimum height */
+    }
+    .text-container {
+        position: absolute; /* Take out of flow */
+        right: 0; /* Align to the right of the relative parent (.row) */
+        top: 50%; /* Position top edge at the middle */
+        transform: translateY(-50%); /* Shift up by half its height */
+        width: 41.66666667%; /* Equivalent to col-lg-5 */
+        height: auto; /* Let content determine height */
+        max-height: 90%; /* Prevent overflow */
+        /* Apply Bootstrap rounding utilities */
+        border-top-left-radius: var(--bs-border-radius-xl) !important;
+        border-bottom-left-radius: var(--bs-border-radius-xl) !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        /* Adjust shadow for overlap */
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+        /* Padding already set via p-lg-5 class */
+        /* No flex centering needed due to absolute positioning */
+    }
+    .text-container::before {
+        height: 80px;
+    }
+}
+
+/* Extra large screens: Adjust padding and shadow */
+@media (min-width: 1200px) {
+    .text-container {
+         padding: var(--bs-spacer) * 3 !important; /* Increase padding */
+         box-shadow: -15px 0 40px rgba(0, 0, 0, 0.2);
+         /* width remains col-lg-5 equivalent unless overridden by col-xl-* */
+    }
+     .text-container::before {
+        height: 90px;
+    }
+}
+
+/* Small screens: Adjust highlight and padding */
+@media (max-width: 767.98px) {
+     .text-container {
+         padding: var(--bs-spacer) * 1.5 !important; /* Adjust padding */
+     }
+    .text-container::before {
+        height: 50px;
+    }
+}
+</style>
 

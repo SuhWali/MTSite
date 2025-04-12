@@ -8,7 +8,7 @@ from wagtail import blocks
 
 
 
-from core.blocks import TopArticlesBlock, CarouselBlock, SubscribeBlock, AccordionBlock, ImageBlock, TestimonialsBlock, CardBlock, NotificationBannerBlock, MainPersonMassage
+from core.blocks import TopArticlesBlock, CarouselBlock, SubscribeBlock, AccordionBlock, ImageBlock, TestimonialsBlock, CardBlock, NotificationBannerBlock, MainPersonMassage, HeadingBlock
 
 class HomePage(Page):
     template = "home/home_page.html"
@@ -36,6 +36,7 @@ class HomePage(Page):
         ('body', blocks.RichTextBlock()),
         ('testimonials', TestimonialsBlock()),
         ('card', CardBlock()),
+        ('HeadingBlock', HeadingBlock())
         ],
         blank=True,
         null=True

@@ -23,47 +23,35 @@
 
 <!-- Floating Button (Fixed Position) -->
 <a href="https://wa.link/4ick1r" 
-   class="whatsapp-float" 
+   class="position-fixed d-flex align-items-center justify-content-center bg-white rounded-circle shadow p-2 whatsapp-btn"
+   style="bottom: 20px; right: 20px; z-index: 1000; transition: all 0.3s ease;"
    target="_blank" 
    rel="noopener noreferrer">
-   <img src="../../../media/images/2496112.png" alt="Chat on WhatsApp" width="60">
+   <span class="whatsapp-tooltip">Chat with us!</span>
+   <img src="../../../media/images/2496112.png" alt="Chat on WhatsApp" width="35" height="35" style="transition: all 0.3s ease;">
 </a>
-
-
-
-{% if page %}
-    {% for translation in page.get_translations.live %}
-        <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ translation.locale.language_code }}">
-            {{ translation.locale.language_code }}
-        </a>
-    {% endfor %}
-{% endif %}
-
     {% if page.header %}
         {% for block in page.header %}
         {% include_block page.header with template="blocks/hero_carousel_block.html" %}        {% endfor %}
     {% endif %}
 
-    <div class="container home-content-container">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 
             {% for block in page.main_body %}
                 {% if block.block_type == 'body' %}
-                <div class="home-rich-content">
-                    {% include_block block %}
-                    <a href="#" class="home-cta">Learn More</a>
+                <div class="card bg-primary-light border-left-5 border-top-5 border-right-5 border-bottom-5 border-primary rounded my-4 shadow-sm">
+                    <div class="card-body">
+                        {% include_block block %}
+                    </div>
                 </div>
-                
                 {% else %}
                 {% include_block block %}
                 {% endif %}
             {% endfor %}
             </div>
         </div>
-
-        
-
 
     </div>
 {% endblock content %}

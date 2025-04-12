@@ -1,40 +1,42 @@
 {% load wagtailcore_tags %}
 
-<div class="testimonials-block my-5">
+<div class="testimonials-block container my-5">
     {% if value.title %}
-    <h2 class="testimonials-title text-center mb-4">{{ value.title }}</h2>
+    <h2 class="testimonials-title text-center mb-4 display-5 text-primary">{{ value.title }}</h2>
     {% endif %}
     
-    <div class="testimonials-grid">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for testimonial in value.testimonials %}
-        <div class="testimonial-item">
-            <div class="video-container">
-                <div class="video-embed">
-                    {{ testimonial.video }}
-                </div>
-                <div class="video-preview-overlay">
-                    {% if testimonial.quote %}
-                    <div class="preview-quote">
-                        <span class="quote-mark">"</span>
-                        {{ testimonial.quote }}
-                        <span class="quote-mark">"</span>
+        <div class="col">
+            <div class="testimonial-item card h-100 shadow-sm border-0 overflow-hidden">
+                <div class="video-container " style="cursor: pointer;">
+                    <div class="video-embed ratio ratio-16x9 embed-responsive-item">
+                        {{ testimonial.video }}
                     </div>
+                    <div class="video-preview-overlay">
+                        {% if testimonial.quote %}
+                        <div class="preview-quote p-3">
+                            <span class="quote-mark">&ldquo;</span>
+                            {{ testimonial.quote }}
+                            <span class="quote-mark">&rdquo;</span>
+                        </div>
+                        {% endif %}
+                        <div class="play-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-info card-body">
+                    <h4 class="testimonial-name card-title h5 text-primary mb-1">{{ testimonial.name }}</h4>
+                    {% if testimonial.role %}
+                    <p class="testimonial-role card-subtitle text-muted small mb-2">{{ testimonial.role }}</p>
                     {% endif %}
-                    <div class="play-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
-                        </svg>
-                    </div>
+                    {% if testimonial.quote %}
+                    <p class="testimonial-quote-preview card-text mt-3"><em>&ldquo;{{ testimonial.quote|truncatechars:80 }}&rdquo;</em></p>
+                    {% endif %}
                 </div>
-            </div>
-            <div class="testimonial-info">
-                <h4 class="testimonial-name">{{ testimonial.name }}</h4>
-                {% if testimonial.role %}
-                <p class="testimonial-role">{{ testimonial.role }}</p>
-                {% endif %}
-                {% if testimonial.quote %}
-                <p class="testimonial-quote-preview"><em>"{{ testimonial.quote|truncatechars:60 }}"</em></p>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
@@ -42,68 +44,48 @@
 </div>
 
 <style>
-.testimonials-block {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-}
 
 .testimonials-title {
-    font-size: 2rem;
-    color: #003366;
-    margin-bottom: 2rem;
-    position: relative;
+
+    position: relative; /* Keep for underline */
 }
 
-.testimonials-title:after {
+.testimonials-title::after { /* Keep custom underline */
     content: '';
     display: block;
     width: 80px;
     height: 3px;
-    background: linear-gradient(to right, #0077B6, #00B4D8);
+    /* Use theme colors if possible, or keep gradient */
+    background: linear-gradient(to right, var(--bs-primary), var(--bs-secondary)); 
     margin: 0.5rem auto 0;
 }
 
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 2rem;
-}
+/* .testimonials-grid replaced by Bootstrap row/cols */
 
-.testimonial-item {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.testimonial-item { /* Now applied to .card */
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Keep transition */
+    border-radius: 0.75rem !important; /* Override default card radius if needed */
 }
 
 .testimonial-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    /* Use a slightly larger shadow on hover */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; 
 }
 
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    cursor: pointer;
+.video-container { /* Now applied to .ratio */
+
+    background-color: #eee; /* Add a subtle background */
 }
 
-.video-embed {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
+
 
 .video-embed iframe {
     width: 100%;
     height: 100%;
     border: none;
-    pointer-events: none; /* This makes the overlay clickable instead */
+    pointer-events: none; /* Keep for initial state */
 }
 
 .video-preview-overlay {
@@ -112,87 +94,58 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 51, 102, 0.7);
+    /* Use Bootstrap primary color with opacity */
+    background-color: rgba(var(--bs-primary-rgb), 0.7); 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    padding: 1rem;
+    transition: opacity 0.3s ease; /* Keep simple transition */
+    padding: 1rem; /* Use Bootstrap spacing unit */
     color: white;
     text-align: center;
-    z-index: 2; /* Make overlay appear above the video */
+    z-index: 2; /* Ensure overlay is on top */
+    border-radius: inherit; /* Inherit card's rounded corners */
 }
 
 .testimonial-item:hover .video-preview-overlay {
     opacity: 1;
-    transform: scale(1.05);
+    /* Removed transform: scale(1.05); - simpler interaction */
 }
 
 .preview-quote {
-    font-size: 1rem;
+    font-size: 1rem; /* Keep size or use fs-6 */
     font-style: italic;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem; /* Keep or use mb-3 */
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4; /* Allow slightly more text */
     -webkit-box-orient: vertical;
+    max-height: 6em; /* Fallback for max lines */
 }
 
 .quote-mark {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Keep size or use fs-4 */
     font-weight: bold;
-    color: #00B4D8;
+    /* Use Bootstrap secondary color */
+    color: var(--bs-secondary); 
 }
 
 .play-icon {
     color: white;
     transition: transform 0.3s ease;
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    /* Removed pulse animation for simplicity, can be added back if desired */
+}
+.play-icon svg {
+    transition: transform 0.2s ease-in-out;
 }
 
-.testimonial-item:hover .play-icon {
-    transform: scale(1.2);
-    animation: pulse 1.5s infinite;
+.testimonial-item:hover .play-icon svg {
+    transform: scale(1.15); 
 }
 
-@keyframes pulse {
-    0% { transform: scale(1.2); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1.2); }
-}
-
-.testimonial-info {
-    padding: 1.5rem;
-    background: white;
-}
-
-.testimonial-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0;
-    color: #003366;
-}
-
-.testimonial-role {
-    color: #666;
-    font-size: 0.9rem;
-    margin: 0.5rem 0 0;
-}
-
-.testimonial-quote-preview {
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 
 <script>
@@ -201,61 +154,104 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoContainers = document.querySelectorAll('.video-container');
     
     videoContainers.forEach(container => {
-        // When clicking on the container, trigger the embedded video
+        // Use click event listener on the container
         container.addEventListener('click', function(e) {
-            // Get the iframe inside this container
             const iframe = this.querySelector('iframe');
-            
-            // Only proceed if we found an iframe
+            const overlay = this.querySelector('.video-preview-overlay');
+
             if (iframe) {
-                // Get the current iframe src
-                let src = iframe.src;
-                
-                // If YouTube video, add autoplay parameter
-                if (src.includes('youtube.com') || src.includes('youtu.be')) {
-                    // Remove existing autoplay parameter if it exists
-                    src = src.replace(/(&|\?)autoplay=1/g, '');
-                    
-                    // Add autoplay parameter
+                let src = iframe.getAttribute('src'); // Use getAttribute for src
+
+                // Check if src is valid and looks like a video URL
+                if (src && (src.includes('youtube.com') || src.includes('youtu.be') || src.includes('vimeo.com'))) {
+                    // Remove existing autoplay=1 if present
+                    src = src.replace(/[?&]autoplay=1/g, '');
+
+                    // Add autoplay parameter correctly
                     if (src.includes('?')) {
                         src += '&autoplay=1';
                     } else {
                         src += '?autoplay=1';
                     }
                     
+                    // Add parameters for better embedding experience
+                    if (src.includes('youtube.com') || src.includes('youtu.be')) {
+                        src += '&rel=0'; // Prevent related videos from same channel
+                        // Consider adding modestbranding=1 if needed
+                    } else if (src.includes('vimeo.com')) {
+                        src += '&byline=0&portrait=0'; // Hide Vimeo extras
+                    }
+
                     // Update the iframe src to trigger autoplay
-                    iframe.src = src;
-                    
-                    // Make the iframe focusable and give it focus to allow keyboard control
+                    iframe.setAttribute('src', src); // Use setAttribute
+
+                    // Make the iframe focusable and give it focus for controls
                     iframe.setAttribute('tabindex', '0');
                     iframe.focus();
                     
-                    // Enable pointer events for direct interaction
-                    iframe.style.pointerEvents = 'auto';
+                    // Enable pointer events for direct interaction with video player
+                    iframe.style.pointerEvents = 'auto'; 
                     
-                    // Hide the overlay
-                    const overlay = this.querySelector('.video-preview-overlay');
+                    // Hide the overlay smoothly
                     if (overlay) {
                         overlay.style.opacity = '0';
-                        overlay.style.pointerEvents = 'none';
+                        overlay.style.pointerEvents = 'none'; // Make it non-interactive
                     }
+                } else {
+                    console.warn("Testimonial video iframe src is missing or invalid:", iframe);
                 }
+            } else {
+                console.warn("Testimonial video iframe not found in container:", this);
             }
         });
     });
     
-    // Handle mobile touch
+    // Improved mobile touch handling for overlay visibility
     const testimonialItems = document.querySelectorAll('.testimonial-item');
-    
+    let touchInitiated = false; // Flag to distinguish tap from scroll
+
     testimonialItems.forEach(item => {
-        item.addEventListener('touchstart', function() {
-            const overlay = this.querySelector('.video-preview-overlay');
-            if (overlay && overlay.style.opacity !== '1') {
-                overlay.style.opacity = '1';
-                // Prevent immediate click-through on first touch
-                event.preventDefault();
-            }
-        });
+        const overlay = item.querySelector('.video-preview-overlay');
+        
+        if (overlay) {
+            item.addEventListener('touchstart', (e) => {
+                // Only show overlay if it's not already visible (video not playing)
+                if (overlay.style.opacity !== '1' && parseFloat(getComputedStyle(overlay).opacity) < 0.1) {
+                     touchInitiated = true; // Mark touch start
+                     // Small delay to prevent triggering on scroll
+                    setTimeout(() => {
+                        if (touchInitiated) {
+                            overlay.style.opacity = '1';
+                             // Temporarily disable pointer events on the overlay 
+                             // to allow the *next* touch/click to go to the container for playing video.
+                            overlay.style.pointerEvents = 'none'; 
+                        }
+                    }, 150); 
+                }
+            }, { passive: true }); // Use passive for better scroll performance
+
+            item.addEventListener('touchmove', () => {
+                touchInitiated = false; // Cancel overlay display if user scrolls
+            }, { passive: true });
+
+            item.addEventListener('touchend', () => {
+                 touchInitiated = false; // Reset flag
+                 // After a brief moment, restore pointer events if overlay is still visible
+                 // This handles cases where the video wasn't clicked immediately
+                setTimeout(() => {
+                    if (parseFloat(getComputedStyle(overlay).opacity) > 0.9) {
+                        overlay.style.pointerEvents = 'auto';
+                    }
+                }, 300);
+            });
+
+            // Reset overlay pointer events if the mouse leaves the item (desktop)
+            item.addEventListener('mouseleave', () => {
+                if (parseFloat(getComputedStyle(overlay).opacity) > 0.9) {
+                    overlay.style.pointerEvents = 'auto';
+                }
+            });
+        }
     });
 });
 </script> 

@@ -1,443 +1,48 @@
-/* Enhanced WhatsApp floating button */
-.whatsapp-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    border-radius: 50%;
-    padding: 8px;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Custom tooltip for WhatsApp button */
+.whatsapp-tooltip {
+    visibility: hidden;
     background-color: white;
-}
-
-.whatsapp-float img {
-    width: 35px;
-    height: 35px;
-    transition: all 0.3s ease;
-}
-
-.whatsapp-float::before {
-    content: 'Chat with us!';
-    position: absolute;
-    right: 60px;
-    background-color: #fff;
-    padding: 6px 12px;
+    color: #075E54;
+    text-align: center;
     border-radius: 20px;
+    padding: 6px 12px;
+    position: absolute;
+    z-index: 1001;
+    right: 60px;
+    opacity: 0;
+    transition: opacity 0.3s;
     font-size: 13px;
     font-weight: 500;
-    color: #075E54;
-    opacity: 0;
-    transition: all 0.3s ease;
     white-space: nowrap;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.whatsapp-float:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
-}
-
-.whatsapp-float:hover::before {
+.whatsapp-btn:hover .whatsapp-tooltip {
+    visibility: visible;
     opacity: 1;
-    right: 65px;
 }
 
-.whatsapp-float:hover img {
+/* WhatsApp button hover effects that can't be done with Bootstrap alone */
+.whatsapp-btn:hover {
+    transform: translateY(-3px);
+}
+
+.whatsapp-btn:hover img {
     transform: rotate(5deg);
 }
 
-/* Subtle pulse animation */
-@keyframes subtle-pulse {
-    0% {
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-    }
-    50% {
-        box-shadow: 0 4px 16px rgba(37, 211, 102, 0.5);
-    }
-    100% {
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-    }
+/* Body padding transition for notification banner */
+body.has-notification-banner {
+    transition: padding-top 0.3s ease;
 }
 
-.whatsapp-float {
-    animation: subtle-pulse 2s infinite;
-}
-
-/* Home page specific styling */
-.home-content-container {
-    margin-top: 3rem;
-    position: relative;
-    z-index: 10;
-    background-color: #fff;
-    padding: 1.5rem 1rem;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-}
-
-/* Enhanced section styling */
-.home-section {
-    margin-bottom: 2.5rem;
-    padding: 1.5rem;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.home-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 119, 182, 0.08);
-}
-
-.home-section-title {
-    position: relative;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    font-weight: 700;
-    color: var(--primary-dark, #032B43);
-    font-size: 1.75rem;
-}
-
-.home-section-title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--primary, #0077B6);
-    border-radius: 2px;
-}
-
-/* Enhance the rich text content */
-.home-rich-content {
-    padding: 1.5rem;
-    background-color: rgba(144, 224, 239, 0.05);
-    border-radius: 10px;
-    border-left: 3px solid var(--primary, #0077B6);
-    margin: 1.5rem 0;
-    box-shadow: 0 3px 10px rgba(0, 119, 182, 0.05);
-}
-
-.home-rich-content h2 {
-    color: var(--primary-dark, #032B43);
-    margin-bottom: 1rem;
-    font-weight: 600;
-    font-size: 1.5rem;
-}
-
-.home-rich-content p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--dark, #333);
-    margin-bottom: 1rem;
-}
-
-/* Simplified wave divider */
-.wave-divider {
-    position: relative;
-    height: 50px;
-    margin: 2rem 0;
-    overflow: hidden;
-}
-
-.wave-divider::before {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%2390e0ef' opacity='.25'%3E%3C/path%3E%3C/svg%3E");
-    background-size: 50% 100%;
-    animation: wave 20s linear infinite;
-}
-
-@keyframes wave {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Call to action button */
-.home-cta {
-    display: inline-block;
-    padding: 0.7rem 1.5rem;
-    background: linear-gradient(135deg, var(--primary, #0077B6) 0%, var(--accent, #00B4D8) 100%);
-    color: white;
-    font-weight: 600;
-    border-radius: 50px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0, 119, 182, 0.2);
-    margin-top: 1rem;
-    font-size: 0.95rem;
-}
-
-.home-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 119, 182, 0.3);
-    color: white;
-}
-
-/* Featured content highlight */
-.featured-highlight {
-    background: linear-gradient(135deg, rgba(144, 224, 239, 0.1) 0%, rgba(3, 4, 94, 0.03) 100%);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.featured-highlight::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%230077b6' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
-    opacity: 0.5;
-}
-
-/* Responsive adjustments */
-@media (min-width: 768px) {
-    .home-content-container {
-        margin-top: 4rem;
-        padding: 2rem;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-    }
-    
-    .home-section {
-        padding: 2rem;
-        margin-bottom: 3rem;
-    }
-    
-    .home-rich-content {
-        padding: 2rem;
-        margin: 2rem 0;
-    }
-    
-    .home-section-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    .home-rich-content h2 {
-        font-size: 1.75rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .home-rich-content p {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-    }
-    
-    .home-cta {
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
-        margin-top: 1.5rem;
-    }
-    
-    .featured-highlight {
-        padding: 2.5rem;
-        margin: 2.5rem 0;
-    }
-    
-    .wave-divider {
-        height: 70px;
-        margin: 3rem 0;
-    }
-    
-    .whatsapp-float {
-        bottom: 30px;
-        right: 30px;
-        padding: 10px;
-    }
-    
-    .whatsapp-float img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-@media (min-width: 992px) {
-    .home-content-container {
-        margin-top: 5rem;
-        padding: 2.5rem;
-    }
-    
-    .home-section {
-        padding: 2.5rem;
-        margin-bottom: 4rem;
-    }
-    
-    .wave-divider {
-        height: 80px;
-    }
-}
-
-/* Small devices fixes (phones) */
+/* Prevent horizontal scrolling on small devices */
 @media (max-width: 576px) {
     body {
-        overflow-x: hidden; /* Prevent horizontal scrolling */
+        overflow-x: hidden;
     }
     
-    .container {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    .home-content-container {
-        margin-top: 2rem;
-        padding: 1.25rem 1rem;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-    }
-    
-    .home-section {
-        margin-bottom: 2rem;
-        padding: 1.25rem;
-    }
-    
-    .home-section-title {
-        font-size: 1.35rem;
-        margin-bottom: 1rem;
-    }
-    
-    .home-rich-content {
-        padding: 1.25rem;
-        margin: 1.25rem 0;
-    }
-    
-    .home-rich-content h2 {
-        font-size: 1.25rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .home-rich-content p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 0.75rem;
-    }
-    
-    .home-cta {
-        padding: 0.6rem 1.25rem;
-        font-size: 0.9rem;
-        margin-top: 0.75rem;
-        display: block;
-        text-align: center;
-    }
-    
-    .featured-highlight {
-        padding: 1.25rem;
-        margin: 1.25rem 0;
-    }
-    
-    .wave-divider {
-        height: 40px;
-        margin: 1.5rem 0;
-    }
-    
-    .whatsapp-float {
-        bottom: 15px;
-        right: 15px;
-        padding: 6px;
-    }
-    
-    .whatsapp-float img {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .whatsapp-float::before {
+    .whatsapp-tooltip {
         display: none; /* Hide tooltip on very small screens */
-    }
-    
-    /* Fix for card layouts */
-    .card {
-        margin-bottom: 1rem;
-    }
-    
-    /* Fix spacing for streamfield blocks */
-    .block-top_articles {
-        margin-bottom: 0 !important;
-    }
-    
-    /* Ensure proper spacing between different blocks */
-    .stream-field [class^="block-"] {
-        margin-bottom: 1.5rem;
-    }
-}
-
-/* Translation Selector Styling */
-.translation-selector {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 100;
-    display: flex;
-    gap: 0.3rem;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 0.4rem 0.75rem;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-}
-
-.translation-link {
-    text-decoration: none;
-    color: var(--primary-dark, #032B43);
-    font-weight: 500;
-    padding: 0.2rem 0.6rem;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-}
-
-.translation-link:hover {
-    background-color: var(--primary, #0077B6);
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 119, 182, 0.2);
-}
-
-@media (max-width: 768px) {
-    .translation-selector {
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.2rem 0.5rem;
-    }
-    
-    .translation-link {
-        font-size: 0.75rem;
-        padding: 0.15rem 0.5rem;
-    }
-}
-
-.notification-banner {
-    width: 100%;
-    color: white;
-    padding: 0.6rem 0;
-    position: relative;
-    z-index: 1030; /* Higher than navbar */
-    font-size: 0.95rem;
-}
-
-@media (max-width: 576px) {
-    .notification-banner {
-        padding: 0.5rem 0;
-        font-size: 0.85rem;
     }
 } 
