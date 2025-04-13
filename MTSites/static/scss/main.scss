@@ -1,0 +1,124 @@
+// static/scss/main.scss
+
+// --------------------------------------------------
+// 1. Override Bootstrap's Sass Variables (Optional but Recommended)
+// --------------------------------------------------
+// Place *your* variable overrides HERE, *before* importing Bootstrap.
+// Find available variables in: node_modules/bootstrap/scss/_variables.scss
+
+// Example: Theme Colors
+$primary: hsl(201, 100%, 36%); 
+$secondary:hsl(190, 100%, 42%);
+$light:hsl(189, 30%, 92%);
+$dark:hsl(210, 100%, 2%);
+$success: hsl(145, 75%, 54%); 
+
+@import "../../../node_modules/bootstrap/scss/_functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+
+$custom_colors: (
+  "primary-light":hsl(188, 92%, 91%),
+  "primary-dark":hsl(239, 94%, 19%),
+  "accent":hsl(190, 60%, 34%)
+);
+
+$theme-colors: map-merge($custom_colors, $theme_colors);
+
+
+
+// Example: Typography
+// $font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+// $headings-font-weight: 700; // Make headings bolder
+
+// Example: Spacing & Grid
+// $spacer: 1.2rem; // Base spacing unit
+// $grid-gutter-width: 2rem; // Gutters between columns
+
+// Example: Borders
+// $border-radius: .15rem; // Slightly less rounded corners
+// $border-radius-lg: .25rem;
+// $border-radius-sm: .1rem;
+
+// Example: Enable CSS Grid Layouts (Bootstrap 5.x)
+// $enable-cssgrid: true;
+
+// --------------------------------------------------
+// 2. Import Bootstrap's Core Sass Files
+// --------------------------------------------------
+// Import the *entire* Bootstrap framework.
+// The path is relative to this file (main.scss).
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+
+
+// $theme-colors: map-merge(
+//   $theme-colors,
+//   (
+   
+//     "primary-light": $primary-light,
+//     "primary-dark": $primary-dark,
+//     "accent": $accent, // You could add others too
+
+   
+//     )
+// );
+
+
+
+
+// --- OR ---
+// Alternatively, for smaller CSS output, import only the parts you need.
+// You MUST import functions, variables, mixins first.
+// See Bootstrap docs for the full list and dependencies.
+// @import "../../node_modules/bootstrap/scss/functions";
+// @import "../../node_modules/bootstrap/scss/variables"; // Core variables
+// @import "../../node_modules/bootstrap/scss/variables-dark"; // Dark mode variables (if using)
+// @import "../../node_modules/bootstrap/scss/maps";
+// @import "../../node_modules/bootstrap/scss/mixins";
+// @import "../../node_modules/bootstrap/scss/root";
+// // Add required component imports below, e.g.:
+// @import "../../node_modules/bootstrap/scss/reboot";
+// @import "../../node_modules/bootstrap/scss/containers";
+// @import "../../node_modules/bootstrap/scss/grid";
+// @import "../../node_modules/bootstrap/scss/buttons";
+// @import "../../node_modules/bootstrap/scss/card";
+// @import "../../node_modules/bootstrap/scss/nav";
+// @import "../../node_modules/bootstrap/scss/navbar";
+// @import "../../node_modules/bootstrap/scss/utilities/api"; // Required for utility classes
+
+
+// --------------------------------------------------
+// 3. Add Your Custom Sass/CSS Rules
+// --------------------------------------------------
+// Place your own custom styles HERE, *after* importing Bootstrap.
+// You can use Bootstrap variables and mixins defined above.
+
+// body {
+//   // Example: Apply a custom default background
+//   // background-color: $light; // Using a Bootstrap variable
+// }
+
+// .site-header {
+//   background-color: $primary; // Using your overridden primary color
+//   padding: $spacer * 0.5 $spacer; // Using Bootstrap's spacer variable
+
+//   .site-title {
+//     color: white;
+//     font-weight: $headings-font-weight; // Using your overridden heading weight
+//   }
+// }
+
+// .feature-card {
+//   border: 1px solid $secondary;
+//   padding: $spacer * 1.5;
+//   margin-bottom: $grid-gutter-width; // Use grid gutter for consistent spacing
+// }
+
+// // Standard CSS rules work fine too
+// img.responsive-square {
+//     aspect-ratio: 1 / 1;
+//     width: 100%;
+//     object-fit: cover;
+// }
+

@@ -1,0 +1,285 @@
+/* Full-width carousel styling */
+#newsCarousel {
+    margin-top: -1.5rem; /* Negative margin to remove gap from navbar */
+    margin-bottom: 0; /* Removed bottom margin */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    height: 100vh;
+    max-height: 80vh;
+}
+
+#newsCarousel .carousel-item {
+    height: 100%;
+}
+
+#newsCarousel img, #newsCarousel .bg-light {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Zoom animation for static images */
+#newsCarousel .carousel-item.active img,
+#newsCarousel .carousel-item.active .bg-light {
+    animation: carouselZoom 10s forwards;
+    transform-origin: center;
+}
+
+@keyframes carouselZoom {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* Enhanced caption styling */
+#newsCarousel .carousel-caption {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+    bottom: 10rem;
+    left: 10%;
+    right: 10%;
+}
+
+/* Make carousel caption visible on all devices */
+#newsCarousel .carousel-caption {
+    display: block !important;
+}
+
+/* Content container adjustment to accommodate full-width carousel */
+.main-content {
+    margin-top: 3rem;
+    position: relative; /* Added position relative */
+    z-index: 10; /* Added z-index to ensure content appears above carousel */
+    background-color: #fff; /* Added background color */
+    padding-top: 1.5rem; /* Added top padding */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.05); /* Added subtle shadow */
+}
+
+/* Latest News section styling */
+.latest-news-heading {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.latest-news-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 4px;
+    background: var(--bs-primary, #0d6efd);
+    border-radius: 2px;
+}
+
+/* News card styling */
+.news-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.news-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.news-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.news-card .card-body {
+    padding: 1.5rem;
+}
+
+.news-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.news-card .card-text {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.news-card .badge {
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+    transition: all 0.2s ease;
+}
+
+.news-card .badge:hover {
+    background-color: var(--bs-primary, #0d6efd);
+}
+
+/* Pagination styling */
+.pagination .page-link {
+    color: var(--bs-primary, #0d6efd);
+    border-radius: 4px;
+    margin: 0 3px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary, #0d6efd);
+    border-color: var(--bs-primary, #0d6efd);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    #newsCarousel {
+        max-height: 70vh;
+    }
+    
+    #newsCarousel .carousel-caption {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 992px) {
+    #newsCarousel {
+        max-height: 65vh;
+    }
+    
+    .news-card .card-img-top {
+        height: 200px;
+    }
+    
+    .main-content {
+        margin-top: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #newsCarousel {
+        max-height: 60vh;
+    }
+    
+    #newsCarousel .carousel-caption {
+        padding: 1rem;
+        bottom: 3rem;
+        left: 5%;
+        right: 5%;
+    }
+    
+    #newsCarousel .carousel-caption h3 {
+        font-size: 1.5rem;
+    }
+    
+    .news-card .card-img-top {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    #newsCarousel {
+        max-height: 50vh;
+    }
+    
+    #newsCarousel .carousel-caption {
+        bottom: 1.5rem;
+        padding: 0.75rem;
+    }
+    
+    #newsCarousel .carousel-caption h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #newsCarousel .carousel-caption .btn {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .main-content {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    
+    .latest-news-heading {
+        font-size: 1.5rem;
+    }
+    
+    .row-cols-md-3 > * {
+        width: 100%; /* 1 column on small screens */
+    }
+    
+    .news-card .card-img-top {
+        height: 200px;
+    }
+    
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .news-card:hover {
+        transform: none;
+    }
+    
+    .news-card:active {
+        transform: translateY(-5px);
+    }
+}
+
+/* Add some styling for the tag badges */
+.badge.bg-secondary {
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+.badge.bg-secondary:hover {
+    background-color: var(--bs-primary, #0d6efd) !important;
+    cursor: pointer;
+}
+
+/* Style for the current tag alert */
+.current-tag-alert {
+    background-color: rgba(var(--bs-info-rgb), 0.1);
+    border-left: 4px solid var(--bs-info);
+    border-radius: 4px;
+}
+
+.current-tag-alert .btn {
+    transition: all 0.2s ease;
+}
+
+.current-tag-alert .btn:hover {
+    background-color: var(--bs-dark);
+    color: white;
+}
+
+.row-cols-md-3 > * {
+    flex: 0 0 auto;
+    width: 50%; /* 2 columns on medium screens */
+} 
