@@ -11,4 +11,4 @@
 #     list_filter = ('date', 'live')
 #     search_fields = ('title', 'intro')
 
-# modeladmin_register(NewsArticleAdmin) 
+# modeladmin_register(NewsArticleAdmin)

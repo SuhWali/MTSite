@@ -469,6 +469,7 @@ class BaseStreamBlock(blocks.StreamBlock):
     accordion = AccordionBlock()
     two_column = TwoColumnBlock()
     images = ImageBlock()
+    VideoBlock = VideoBlock()
  
     class Meta:
         icon = 'placeholder'

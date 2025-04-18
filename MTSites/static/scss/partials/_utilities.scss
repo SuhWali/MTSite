@@ -1,0 +1,137 @@
+/* Utility Classes
+   -------------------- */
+
+// Spacing utilities
+.mt-negative-1 {
+  margin-top: -0.25rem;
+}
+
+.mt-negative-2 {
+  margin-top: -0.5rem;
+}
+
+.mt-negative-3 {
+  margin-top: -1rem;
+}
+
+.mt-negative-4 {
+  margin-top: -1.5rem;
+}
+
+.mt-negative-5 {
+  margin-top: -3rem;
+}
+
+// Box shadow utilities
+.shadow-sm-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px);
+  }
+}
+
+.shadow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-3px);
+  }
+}
+
+// Text utilities
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-small {
+  font-size: 0.875rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+// Border utilities
+.border-top-accent {
+  border-top: 3px solid var(--bs-primary);
+}
+
+.border-bottom-accent {
+  border-bottom: 3px solid var(--bs-primary);
+}
+
+.border-start-accent {
+  border-left: 3px solid var(--bs-primary);
+}
+
+.border-end-accent {
+  border-right: 3px solid var(--bs-primary);
+}
+
+html[lang="ar"] {
+  .border-start-accent {
+    border-left: none;
+    border-right: 3px solid var(--bs-primary);
+  }
+  
+  .border-end-accent {
+    border-right: none;
+    border-left: 3px solid var(--bs-primary);
+  }
+}
+
+// Background utilities
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--bs-primary-dark) 0%, var(--bs-primary) 100%);
+}
+
+.bg-gradient-light {
+  background: linear-gradient(135deg, #ffffff 0%, var(--bs-light) 100%);
+}
+
+.bg-pattern-dots {
+  background-image: radial-gradient(var(--bs-primary-light) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+// Image utilities
+.img-full-width {
+  width: 100%;
+  height: auto;
+}
+
+.img-square {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.img-hover-zoom {
+  overflow: hidden;
+  
+  img {
+    transition: transform 0.5s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+// Other utilities
+.overflow-visible {
+  overflow: visible !important;
+}
+
+.height-100vh {
+  height: 100vh;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+} 

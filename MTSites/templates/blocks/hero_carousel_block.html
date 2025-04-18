@@ -1,24 +1,24 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 {% load static %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/custom-styles.css' %}">
 
-
-<div id="homeCarousel" class="carousel slide" data-bs-ride="{% if value.auto_play %}carousel{% else %}false{% endif %}" data-bs-interval="7000">
+<div id="homeCarousel" class="carousel hero-carousel slide" data-bs-ride="{% if value.auto_play %}carousel{% else %}false{% endif %}" data-bs-interval="7000">
     <div class="carousel-inner">
         {% for item in value.items %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <div class="carousel-item hero-carousel__item {% if forloop.first %}active{% endif %}">
             {% image item.image fill-1920x1080 as carousel_img %}
-            <img src="{{ carousel_img.url }}" alt="{{ item.title }}">
+            <img src="{{ carousel_img.url }}" alt="{{ item.title }}" class="hero-carousel__image {% if forloop.first %}hero-carousel__image--active{% endif %}">
             
-            <div class="carousel-caption">
-                {% if item.title %}<h3>{{ item.title }} hello</h3>{% endif %}
-                {% if item.text %}<p class="d-none d-md-block">{{ item.text }}</p>{% endif %}
+            <div class="carousel-caption hero-carousel__caption">
+                {% if item.title %}<h3 class="carousel__caption-title">{{ item.title }}</h3>{% endif %}
+                {% if item.text %}<p class="carousel__caption-text d-none d-md-block">{{ item.text }}</p>{% endif %}
                 
                 {% if item.link_type != 'none' %}
                     {% if item.link_type == 'page' and item.page_link %}
-                        <a href="{% pageurl item.page_link %}" class="btn btn-primary mt-2">{{ item.link_text|default:"Read more" }}</a>
+                        <a href="{% pageurl item.page_link %}" class="btn btn-primary carousel__caption-btn mt-2">{{ item.link_text|default:"Read more" }}</a>
                     {% elif item.link_type == 'external' and item.external_link %}
-                        <a href="{{ item.external_link }}" class="btn btn-primary mt-2" target="_blank" rel="noopener">{{ item.link_text|default:"Read more" }}</a>
+                        <a href="{{ item.external_link }}" class="btn btn-primary carousel__caption-btn mt-2" target="_blank" rel="noopener">{{ item.link_text|default:"Read more" }}</a>
                     {% endif %}
                 {% endif %}
             </div>
@@ -28,11 +28,11 @@
     
     {% if value.show_arrows %}
     <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="carousel-control-prev-icon carousel__control-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="carousel-control-next-icon carousel__control-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
     {% endif %}
@@ -40,131 +40,9 @@
     {% if value.show_indicators %}
     <div class="carousel-indicators">
         {% for item in value.items %}
-            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="carousel__indicator {% if forloop.first %}active carousel__indicator--active{% endif %}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
         {% endfor %}
     </div>
     {% endif %}
 </div>
-
-<style>
-    /* Full-width carousel styling */
-    #homeCarousel {
-        margin-top: -1.5rem; /* Negative margin to remove gap from navbar */
-        margin-bottom: 0; /* Removed bottom margin */
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        height: 100vh;
-        max-height: 80vh;
-    }
-    
-    #homeCarousel .carousel-item {
-        height: 100%;
-    }
-    
-    #homeCarousel img, #homeCarousel .bg-light {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
-    
-    /* Zoom animation for static images */
-    #homeCarousel .carousel-item.active img,
-    #homeCarousel .carousel-item.active .bg-light {
-        animation: carouselZoom 10s forwards;
-        transform-origin: center;
-    }
-    
-    @keyframes carouselZoom {
-        0% {
-            transform: scale(1);
-        }
-        100% {
-            transform: scale(1.1);
-        }
-    }
-    
-    /* Enhanced caption styling */
-    #homeCarousel .carousel-caption {
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 8px;
-        padding: 1.5rem;
-        max-width: 600px;
-        margin: 0 auto;
-        bottom: 10rem;
-        left: 10%;
-        right: 10%;
-        display: block !important;
-    }
-    
-    /* Content container adjustment to accommodate full-width carousel */
-    .main-content {
-        margin-top: 5rem;
-        position: relative;
-        z-index: 10;
-        background-color: #fff;
-        padding-top: 2rem;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-        box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 1200px) {
-        #homeCarousel {
-            max-height: 70vh;
-        }
-        
-        #homeCarousel .carousel-caption {
-            max-width: 80%;
-        }
-    }
-    
-    @media (max-width: 992px) {
-        #homeCarousel {
-            max-height: 65vh;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        #homeCarousel {
-            max-height: 60vh;
-        }
-        
-        #homeCarousel .carousel-caption {
-            padding: 1rem;
-            bottom: 3rem;
-            left: 5%;
-            right: 5%;
-        }
-        
-        #homeCarousel .carousel-caption h3 {
-            font-size: 1.5rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        #homeCarousel {
-            max-height: 50vh;
-        }
-        
-        #homeCarousel .carousel-caption {
-            bottom: 1.5rem;
-            padding: 0.75rem;
-        }
-        
-        #homeCarousel .carousel-caption h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        #homeCarousel .carousel-caption .btn {
-            padding: 0.25rem 0.75rem;
-            font-size: 0.875rem;
-        }
-    }
-</style>
 

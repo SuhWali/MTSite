@@ -4,7 +4,7 @@
   
     <a class="navbar-brand d-flex align-items-center" href="/">
       <img src="{% static '../media/images/logo.png' %}" alt="Hargeisa Water Agency Logo" class="logo">
-      <span class="site-name fw-bold text-primary">Hargeisa Water Agency</span>
+      <span class="fw-bold text-primary">Hargeisa Water Agency</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -12,20 +12,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Language selector -->
-        <li class="nav-item me-3 mt-2">
-          <div class="translation-selector">
-            {% if page %}
-                {% for translation in page.get_translations.live %}
-                    <a href="{% pageurl translation %}" 
-                      class="translation-link text-black" 
-                      rel="alternate" 
-                      hreflang="{{ translation.locale.language_code }}">
-                        {{ translation.locale.get_display_name }}
-                    </a>
-                {% endfor %}
-            {% endif %}
-          </div>
-        </li>
+       
         
 
         
@@ -38,6 +25,21 @@
           {% elif page.locale.language_code == 'ar' %}
             {% main_menu add_sub_menus_inline=True template="menu/main_menu_ar.html" %}
           {% endif %}
+        </li>
+
+        <li class="nav-item  bg-secondary align-items-center">
+          <div class="translation-selector">
+            {% if page %}
+                {% for translation in page.get_translations.live %}
+                    <a href="{% pageurl translation %}" 
+                      class="translation-link text-black" 
+                      rel="alternate" 
+                      hreflang="{{ translation.locale.language_code }}">
+                        {{ translation.locale.get_display_name }}
+                    </a>
+                {% endfor %}
+            {% endif %}
+          </div>
         </li>
       </ul>
     </div>

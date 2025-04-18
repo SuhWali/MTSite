@@ -6,26 +6,23 @@
 // Place *your* variable overrides HERE, *before* importing Bootstrap.
 // Find available variables in: node_modules/bootstrap/scss/_variables.scss
 
-// Example: Theme Colors
-$primary: hsl(201, 100%, 36%); 
-$secondary:hsl(190, 100%, 42%);
-$light:hsl(189, 30%, 92%);
-$dark:hsl(210, 100%, 2%);
+// Water-themed color variables
+$primary: hsl(201, 100%, 36%); // #0077b6
+$secondary: hsl(190, 100%, 42%); // #00B4D8
+$light: hsl(189, 30%, 92%); // similar to #caf0f8
+$dark: hsl(210, 100%, 2%); // close to #023e8a
 $success: hsl(145, 75%, 54%); 
 
 @import "../../../node_modules/bootstrap/scss/_functions";
 @import "../../../node_modules/bootstrap/scss/variables";
 
-
 $custom_colors: (
-  "primary-light":hsl(188, 92%, 91%),
-  "primary-dark":hsl(239, 94%, 19%),
-  "accent":hsl(190, 60%, 34%)
+  "primary-light": hsl(188, 92%, 91%), // #90e0ef
+  "primary-dark": hsl(239, 94%, 19%), // #03045e
+  "accent": hsl(190, 60%, 34%) // #227889
 );
 
-$theme-colors: map-merge($custom_colors, $theme_colors);
-
-
+$theme-colors: map-merge($custom_colors, $theme-colors);
 
 // Example: Typography
 // $font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -50,8 +47,6 @@ $theme-colors: map-merge($custom_colors, $theme_colors);
 // The path is relative to this file (main.scss).
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
-
-
 // $theme-colors: map-merge(
 //   $theme-colors,
 //   (
@@ -63,9 +58,6 @@ $theme-colors: map-merge($custom_colors, $theme_colors);
    
 //     )
 // );
-
-
-
 
 // --- OR ---
 // Alternatively, for smaller CSS output, import only the parts you need.
@@ -86,7 +78,6 @@ $theme-colors: map-merge($custom_colors, $theme_colors);
 // @import "../../node_modules/bootstrap/scss/nav";
 // @import "../../node_modules/bootstrap/scss/navbar";
 // @import "../../node_modules/bootstrap/scss/utilities/api"; // Required for utility classes
-
 
 // --------------------------------------------------
 // 3. Add Your Custom Sass/CSS Rules
@@ -122,3 +113,28 @@ $theme-colors: map-merge($custom_colors, $theme_colors);
 //     object-fit: cover;
 // }
 
+@mixin gradient-background($start-color: var(--bs-primary), $end-color: var(--bs-primary-dark)) {
+  background: linear-gradient(135deg, $start-color 0%, $end-color 100%);
+  color: white;
+}
+
+// Apply to your gradient class
+.gradient {
+  @include gradient-background;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 3rem 0 2rem;
+  position: relative;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Apply to your hero class with different padding
+.hero {
+  @include gradient-background;
+  padding: 4rem 0;
+}
+
+// --------------------------------------------------
+// 4. Import partials
+// --------------------------------------------------
+// The partials are imported in main-compiled.scss

@@ -1,8 +1,22 @@
-<div class="block-video mb-6">
-    <div class="video-container aspect-w-16 aspect-h-9 rounded overflow-hidden">
-        {{ value.video }}
+<div class="card mb-4 shadow-sm">
+    <div class="ratio ratio-16x9">
+        <div class="w-100 h-100">
+            {{ value.video }}
+        </div>
     </div>
     {% if value.caption %}
-    <p class="text-sm text-gray-600 mt-2 italic">{{ value.caption }}</p>
+    <div class="card-body py-2">
+        <p class="card-text text-muted fst-italic small">{{ value.caption }}</p>
+    </div>
     {% endif %}
-</div> 
+</div>
+
+<style>
+    .ratio iframe {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style> 

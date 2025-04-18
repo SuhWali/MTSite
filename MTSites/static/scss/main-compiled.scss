@@ -1,0 +1,19 @@
+// Main compiled SCSS file
+// This will replace MTSites.css
+
+// First import main SCSS which contains Bootstrap and variables
+@import "main";
+
+// Import partials
+@import "partials/menus";
+@import "partials/translation-selector";
+@import "partials/carousel";
+@import "partials/section";
+@import "partials/buttons";
+@import "partials/utilities";
+@import "partials/footer";
+
+// Then import custom components
+// @import "custom-styles"; // This is now split into partials
+
+// Import any additional custom SCSS files here if needed 

@@ -1,0 +1,305 @@
+// Menu container styling
+.menu-container {
+  display: flex;
+  align-items: center;
+
+  > ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// Main menu styling
+.main-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Menu items
+.menu-item {
+  position: relative;
+  margin-right: 1rem;
+  
+  &.active > .menu-link {
+    color: var(--bs-primary);
+    font-weight: 600;
+  }
+
+  &.has-children > .menu-link::after {
+    content: '▾';
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+  }
+
+  &.has-children:hover > .menu-link::after {
+    transform: rotate(180deg);
+  }
+}
+
+// Menu links
+.menu-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: var(--bs-primary);
+    text-decoration: none;
+  }
+}
+
+// Submenus
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 200px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  list-style: none;
+  margin: 0;
+  
+  .menu-link {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.95rem;
+
+    &:hover {
+      background-color: var(--bs-light);
+      padding-left: 1.5rem;
+    }
+  }
+}
+
+// Show submenu on hover AND focus for better accessibility
+.menu-item:hover > .sub-menu,
+.menu-item:focus-within > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  display: block;
+}
+
+// Third level submenu positioning
+.sub-menu .sub-menu {
+  top: 0;
+  left: 100%;
+}
+
+// Navbar nav enhancements
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  li.has-children > a::after {
+    content: '▾';
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+  }
+  
+  li.has-children:hover > a::after,
+  li.has-children:focus-within > a::after {
+    transform: rotate(180deg);
+  }
+}
+
+// RTL support
+html[lang="ar"] {
+  .navbar-nav > ul > li {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+
+  .navbar-nav ul ul {
+    left: auto;
+    right: 0;
+  }
+
+  .navbar-nav ul ul ul {
+    left: auto;
+    right: 100%;
+  }
+
+  .menu-item {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+  
+  .sub-menu {
+    left: auto;
+    right: 0;
+  }
+  
+  .sub-menu .sub-menu {
+    left: auto;
+    right: 100%;
+  }
+}
+
+// JavaScript-controllable class to show submenus
+.show-submenu > .sub-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  display: block !important;
+}
+
+// Touch device optimization
+@media (hover: none) and (pointer: coarse) {
+  // For touch devices, submenus on click rather than hover
+  .menu-item > .sub-menu {
+    display: none; // Initially hidden
+  }
+  
+  // Only show submenu with explicit class (added by JS) instead of hover
+  .menu-item:hover > .sub-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .menu-item.show-submenu > .sub-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 992px) {
+  // Structure fixes
+  .navbar-nav, 
+  .navbar-nav > ul,
+  .menu-container > ul,
+  .main-menu {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  
+  .navbar-nav > ul > li,
+  .menu-container > ul > li {
+    margin-right: 0;
+    margin-bottom: 0.25rem;
+  }
+  
+  .nav-item.menu-container {
+    width: 100%;
+  }
+  
+  // Menu items
+  .menu-item {
+    margin-right: 0;
+    margin-bottom: 0.25rem;
+    width: 100%;
+
+    &.has-children {
+      > .menu-link {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        &::after {
+          float: none;
+          margin-top: 0;
+          margin-left: 0.5rem;
+        }
+      }
+      
+      &.show-submenu > .menu-link::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  
+  // Fixing navbar navigation
+  .navbar .navbar-nav {
+    padding: 0.5rem 0;
+    
+    li.has-children > a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      &::after {
+        float: none;
+        margin-top: 0;
+      }
+    }
+  }
+  
+  // Submenu adjustments
+  .sub-menu {
+    position: static;
+    display: none; // Changed from display: none which is overridden by visibility
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background-color: rgba(144, 224, 239, 0.1);
+    border-radius: 4px;
+    margin: 0.25rem 0 0.25rem 1rem;
+    padding: 0 0 0 0.5rem;
+    border-left: 2px solid var(--bs-primary-light);
+    min-width: auto;
+  }
+  
+  // RTL submenu adjustments
+  html[lang="ar"] .sub-menu {
+    margin: 0.25rem 1rem 0.25rem 0;
+    padding: 0 0.5rem 0 0;
+    border-right: 2px solid var(--bs-primary-light);
+    border-left: none;
+  }
+  
+  // JavaScript toggle for submenus
+  .menu-item.show-submenu > .sub-menu {
+    display: block;
+  }
+  
+  // Ensure navbar toggler doesn't get affected
+  .navbar-toggler {
+    z-index: 20;
+    background: var(--bs-primary);
+  }
+}
+
+// Extra small devices
+@media (max-width: 576px) {
+  .menu-link {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .sub-menu .menu-link {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Navbar logo
+.navbar .navbar-brand .logo {
+  height: 40px;
+  width: auto;
+  margin-right: 10px;
+} 
