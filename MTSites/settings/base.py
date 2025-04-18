@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "departments",
     "resources",
     "menus",
-
+    "wagtail",
     'wagtail_localize',
     'wagtail.locales',
     'wagtail_modeladmin',
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
-    "wagtail",
+    
     "modelcluster",
     "taggit",
     "django.contrib.admin",
@@ -111,16 +111,6 @@ WAGTAILIMAGES_MAX_UPLOAD_SIZE = 15 * 1024 * 1024 # 15MB
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wagtaildb',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db', # Matches the service name in docker-compose.yml
-        'PORT': '5432',
-    }
-}
 
 
 # Password validation

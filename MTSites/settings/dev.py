@@ -9,6 +9,18 @@ SECRET_KEY = "django-insecure-#cs1=7)8%cw64qmrf+p0_3k1-2$g^l-86t$*dzf7zo4zppyyi$
 ALLOWED_HOSTS = ["*"]
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wagtaildb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db', # Matches the service name in docker-compose.yml
+        'PORT': '5432',
+    }
+}
+
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
