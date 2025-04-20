@@ -44,3 +44,4 @@ wagtail-modeladmin==2.1.0
 wagtailmenus==4.0.2
 Wand==0.6.13
 Willow==1.9.0
+whitenoise==6.6.0
